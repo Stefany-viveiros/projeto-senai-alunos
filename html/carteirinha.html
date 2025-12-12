@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteirinha do aluno</title>
+    <link rel="stylesheet" href="../css/carteirinha.css">
+</head>
+<body>
+
+<div class="faixa-topo"></div>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo-senai">
+            <img src="../img/logoSenai.jpg" alt="Logo SENAI">
+            <span>ALUNOS</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="senai.html">O SENAI</a></li>
+            <li><a href="carteirinha.html">Carteirinha</a></li>
+            <li><a href="#">Cadastro</a></li>
+            <li><a href="#">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h1 class="titulo">Carteirinha do Aluno</h1>
+
+<div class="container">
+    <div id="card" class="carteirinha">
+        <div class="card-header">
+            <img src="../img/logoSenai.jpg" class="logo-card">
+            <h2>SENAI - Identificação do Aluno</h2>
+        </div>
+
+        <div class="conteudo">
+            <img src="../img/carteirinha.png" class="foto-aluno">
+
+            <div class="info">
+                <p><strong>Nome:</strong> João da Silva</p>
+                <p><strong>RA:</strong> 202501234</p>
+                <p><strong>Curso:</strong> Desenvolvimento de Sistemas</p>
+                <p><strong>Turma:</strong> DS-1</p>
+            </div>
+
+            <div class="qrcode">
+                <img id="qrcode-img" alt="QR Code">
+            </div>
+        </div>
+    </div>
+
+    <button id="download-btn" class="btn-download">Baixar Carteirinha</button>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+<script src="../js/carteirinha.js"></script>
+
+</body>
+</html>
