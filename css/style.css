@@ -129,6 +129,7 @@ h1 {
     display: flex;
     width: 300%;
     animation: slide 20s infinite linear;
+    overflow: hidden;
 }
 
 .slide img {
@@ -136,6 +137,7 @@ h1 {
     height: 300px;
     object-fit: cover;
     border-radius: 12px;
+    overflow: hidden;
 }
 
 @keyframes slide {
