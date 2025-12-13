@@ -10,7 +10,7 @@ body {
     color: #333;
 }
 
-/* ===== NAV BAR PADRÃO ===== */
+
 
 .faixa-topo {
     width: 100%;
@@ -65,7 +65,7 @@ body {
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
-    transition: 0.3s ease-in-out;
+    transition: 0.5s ease-in-out;
 }
 
 .nav-links a:hover {
