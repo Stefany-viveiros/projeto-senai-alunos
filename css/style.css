@@ -120,16 +120,19 @@ h1 {
 
 /* Carrossel */
 .carrossel {
+    display: flex;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: 40px 0;
+    
+    
 }
 
 .carrossel-container {
     display: flex;
     width: 300%;
-    animation: slide 20s infinite linear;
-    overflow: hidden;
+    /* animation: slide 20s infinite linear; */
+    /* overflow: hidden; */
 }
 
 .slide img {
@@ -138,6 +141,7 @@ h1 {
     object-fit: cover;
     border-radius: 12px;
     overflow: hidden;
+    transition: 1.0s all;
 }
 
 @keyframes slide {
