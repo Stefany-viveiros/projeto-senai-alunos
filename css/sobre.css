@@ -7,7 +7,7 @@
 
 body {
     background: #CDC9C9;
-    text-align: justify;
+    color: #333;
 }
 
 .faixa-topo {
@@ -142,5 +142,14 @@ footer {
     background: #111;
     color: #fff;
     text-align: center;
-    padding: 15px;
+    padding: 10px
+}
+
+footer p {
+    margin-top: 30px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    font-size: 17px;
 }
