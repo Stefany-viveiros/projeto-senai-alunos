@@ -141,7 +141,7 @@ h1 {
 
 
 .botao{
-    position: absolute;
+    position: relative;
     top: 45%;
     transform: translateY(-50);
     background: rgba(0,0,0,0);
@@ -160,13 +160,13 @@ h1 {
     color: #a00000;
 }
 
-.prev{
+/* .prev{
     left: 0px;
 }
 
 .next{
-   right: 1px; 
-}
+   right:0px; 
+} */
 
 @keyframes slide {
     0% { transform: translateX(0); }
