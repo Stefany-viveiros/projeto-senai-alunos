@@ -82,4 +82,51 @@ span {
 h1 {
     padding: 10px;
     text-align: center;
+<<<<<<< HEAD
+=======
+   color: red;
+   text-align: center;
+}
+
+.container {
+   background-color: #bdbdbd;
+   border:#bdbdbd 2px solid ;
+   border-radius: 5px;
+   text-align: center;
+   align-items: center;
+   margin: 0px 500px 0px 500px;
+}
+
+input {
+   background-color: rgb(255, 255, 255);
+   width: 500px;
+   padding: 10px;
+   border-radius: 10px;
+}
+
+button {
+    background-color:red;
+    border-radius: 25px;
+    border: #bdbdbd 2px solid;
+    padding: 20px;
+    width: 100px;
+    color:white;
+    text-decoration: none;
+    align-items: center;
+}
+p {
+    margin-bottom: 15px;
+}
+
+a {
+    color: red;
+}
+
+footer {
+    margin-top: 30px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+>>>>>>> f9dba910aeca09fac3fa08564be20718dd818e78
 }
