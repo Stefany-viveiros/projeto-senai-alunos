@@ -142,7 +142,7 @@ button:hover {
 }
 
 
-footer {
+footer p {
     margin-top: 40px;
     background: #111;
     color: #fff;
@@ -150,4 +150,9 @@ footer {
     padding: 15px;
     font-size: 14px;
 }
+
+
+
+
+
 

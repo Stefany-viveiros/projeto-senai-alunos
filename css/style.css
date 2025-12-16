@@ -85,7 +85,7 @@ h1 {
     text-align: center;
 }
 
-/* Home */
+
 .home {
     text-align: center;
     padding: 50px;
@@ -160,21 +160,6 @@ h1 {
     color: #a00000;
 }
 
-/* .prev{
-    left: 0px;
-}
-
-.next{
-   right:0px; 
-} */
-
-@keyframes slide {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-100%); }
-    50% { transform: translateX(-200%); }
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(0); }
-}
 
 
 .sobre {
@@ -201,5 +186,7 @@ footer {
     background: #111;
     color: #fff;
     text-align: center;
-    padding: 15px;
+    padding: 40px;
 }
+
+
