@@ -142,13 +142,29 @@ button:hover {
 }
 
 
-footer p {
-    margin-top: 40px;
+.footer {
     background: #111;
     color: #fff;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 15px;
     text-align: center;
-    padding: 15px;
+}
+
+.footer p {
     font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer span {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #ccc;
 }
 
 
