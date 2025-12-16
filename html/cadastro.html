@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/cadastro.css" />
+  </head>
+  <body>
+    <div class="faixa-topo"></div>
+
+    <nav class="navbar">
+      <div class="navbar-container">
+        <!-- teste -->
+        <div class="logo-senai">
+          <img src="../img/logoSenai.jpg" alt="Logo SENAI" />
+          <span>ALUNOS</span>
+        </div>
+
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li>
+            <a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a>
+          </li>
+          <li><a href="carteirinha.html">Carteirinha</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </div>
+
+      <hr />
+
+      <br /><br /><br /><br />
+      <h1>Cadastre-Se</h1>
+      <br />
+      <div class="container">
+        <br />
+        <section class="group">
+          <input type="text" id="nome" placeholder="Nome Completo" />
+        </section>
+        <br />
+        <section class="group">
+          <input type="text" placeholder="Username/Email" />
+        </section>
+        <br />
+        <section>
+          <input type="number" id="ra" placeholder="RA" />
+        </section>
+        <br />
+        <section class="group">
+          <input type="text" id="telefone" placeholder="Telefone" />
+        </section>
+        <br />
+        <section class="group">
+          <input type="text" id="senha" placeholder="Password/Senha" />
+        </section>
+        <br />
+        <!-- <a onclick="alterarDados()" href="carteirinha.html">cadastrar</a> -->
+        <button onclick="alterarDados()" type="button"> <a href="carteirinha.html">Cadastrar-se</a></button>
+        <br /><br />
+        <p>Já possui login ?<a href="login.html"> Login </a></p>
+      </div>
+
+      <footer>
+        <p>Desenvolvido pelos alunos do SENAI</p>
+        <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros | © 2025</p>
+      </footer>
+    </nav>
+
+    <script src="../js/carteirinha.js"></script>
+  </body>
+</html>

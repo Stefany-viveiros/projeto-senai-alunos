@@ -1,6 +1,5 @@
 // --- GERAR QR CODE ---
 let dados = "RA: 202501234 | João da Silva | DS-1";
-
 let qr = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(dados);
 
 document.getElementById("qrcode-img").src = qr;
@@ -16,3 +15,16 @@ document.getElementById("download-btn").addEventListener("click", function () {
 
     });
 });
+
+function alterarDados(){
+    const novoNome = document.getElementById("nome").value;
+    const novoRa = document.getElementById("ra").value;
+    const displayNome = document.getElementById("displayNome");
+    const displayRa = document.getElementById("displayRa");
+
+    if (novoNome.trim() !== '' && novoRa.trim() !== ''){
+        displayNome.textContent = novoNome;
+        displayRa.textContent = novoRa;
+    }
+
+}

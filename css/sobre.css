@@ -7,21 +7,21 @@
 
 body {
     background: #CDC9C9;
-    color: #333;
+    text-align: justify;
 }
 
 .faixa-topo {
     width: 100%;
-    height: 25px;
-    background-color: #d60000;
+    height: 25px;      
+    background-color: #d60000; 
 }
-
 
 .navbar {
     width: 100%;
     background-color: white;
-    border-bottom: 3px solid #d60000;
+    border-bottom: 3px solid #d60000; 
 }
+
 
 .navbar-container {
     max-width: 1200px;
@@ -32,6 +32,7 @@ body {
     justify-content: space-between;
 }
 
+
 .logo-senai {
     display: flex;
     align-items: center;
@@ -39,36 +40,67 @@ body {
     margin-top: 10px;
 }
 
+span {
+    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 50px;
+    
+}
 .logo-senai img {
     width: 150px;
     height: auto;
 }
+
 
 .logo-senai span {
     font-size: 18px;
     font-weight: bold;
     color: #d60000;
     text-transform: uppercase;
+    
 }
 
 .nav-links {
     display: flex;
     gap: 35px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    color:#d60000;
+    font-size: 30px;
+    text-align: center;
+    list-style: none;      
+    padding: 0;           
+    margin: 0;            
 }
+
 
 .nav-links a {
     color: #333;
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .nav-links a:hover {
     color: #d60000;
+}
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.menu li a:hover,
+.menu li a.ativo {
+    background: #d32f2f;
+    border-radius: 5px;
 }
 
 
@@ -82,8 +114,9 @@ header {
     margin: 20px;
     border-radius: 20px;
     border-bottom: 3px solid white;
+    
+    
 }
-
 
 .container {
     max-width: 900px;
@@ -91,7 +124,7 @@ header {
     margin: 40px auto;
     padding: 20px;
     border-radius: 10px;
-    color: gray;
+    color:gray
 }
 
 h2 {
@@ -122,6 +155,7 @@ p {
     gap: 20px;
     margin: 20px 0;
     flex-wrap: wrap;
+
 }
 
 .item {
@@ -134,22 +168,13 @@ p {
     flex: 1;
     margin: 20px;
     color: rgb(22, 21, 21);
+    border-bottom: #d60000;
 }
-
 
 footer {
-    margin-top: 30px;
+    margin-top: 20px;
     background: #111;
     color: #fff;
     text-align: center;
-    padding: 10px
-}
-
-footer p {
-    margin-top: 30px;
-    background: #111;
-    color: #fff;
-    text-align: center;
-    padding: 8px;
-    font-size: 17px;
+    padding: 15px;
 }
