@@ -190,6 +190,7 @@ h1 {
     color: #ffffff;
     letter-spacing: 0.8px;
     text-align: center;
+    margin: 15px;
 }
 
 .sobre p {
@@ -224,5 +225,3 @@ h1 {
     font-size: 13px;
     color: #ccc;
 }
-
-
