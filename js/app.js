@@ -1,12 +1,11 @@
 import express from "express";
-import conexao from "../infra/conexao.js";
+import routes from "../routes/rotas.routes.js";
 
 const app = express();
-app.use(express.json());
 
-app.get("/", (req, res) =>{
-    res.send('Ola');
-});
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(routes);
 
 
 export default app;
