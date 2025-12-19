@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +8,6 @@
 
 body {
     background: #CDC9C9;
-    color: #333;
 }
 
 
@@ -17,9 +17,10 @@ body {
     background-color: #d60000;
 }
 
+
 .navbar {
     width: 100%;
-    background-color: white;
+    background: #fff;
     border-bottom: 3px solid #d60000;
 }
 
@@ -28,25 +29,19 @@ body {
     margin: auto;
     padding: 15px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .logo-senai {
     display: flex;
     align-items: center;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-span {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 50px;
+    gap: 10px;
 }
 
 .logo-senai img {
-    width: 150px;
-    height: auto;
+    width: 140px;
 }
 
 .logo-senai span {
@@ -58,20 +53,16 @@ span {
 
 
 .nav-links {
-    display: flex;
-    gap: 35px;
-    font-size: 30px;
     list-style: none;
-    padding: 0;
-    margin: 0;
+    display: flex;
+    gap: 30px;
 }
 
 .nav-links a {
-    color: #333;
     text-decoration: none;
+    color: #333;
     font-size: 15px;
-    font-weight: 500;
-    transition: 0.5s ease-in-out;
+    transition: 0.2s;
 }
 
 .nav-links a:hover {
@@ -79,51 +70,105 @@ span {
 }
 
 
-h1 {
-    padding: 10px;
-    text-align: center;
-   color: red;
-   text-align: center;
+main {
+    padding: 30px 15px;
 }
+
+
+main h1 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
 
 .container {
-   background-color: #bdbdbd;
-   border:#bdbdbd 2px solid ;
-   border-radius: 5px;
-   text-align: center;
-   align-items: center;
-   margin: 0px 500px 0px 500px;
+    max-width: 420px;
+    background: #fff;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
 }
 
-input {
-   background-color: rgb(255, 255, 255);
-   width: 500px;
-   padding: 10px;
-   border-radius: 10px;
+
+.group {
+    margin-bottom: 15px;
+    text-align: left;
 }
+
+.group label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
 
 button {
-    background-color:red;
-    border-radius: 25px;
-    border: #bdbdbd 2px solid;
-    padding: 20px;
-    width: 100px;
-    color:white;
+    width: 100%;
+    padding: 12px;
+    background: #d60000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #b80000;
+}
+
+
+.container p {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.container a {
+    color: #d60000;
+    font-weight: bold;
     text-decoration: none;
-    align-items: center;
-}
-p {
-    margin-bottom: 15px;
 }
 
-a {
-    color: red;
-}
 
-footer {
-    margin-top: 30px;
+.footer {
     background: #111;
     color: #fff;
-    text-align: center;
-    padding: 15px;
+    margin-top: 40px;
 }
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 15px;
+    text-align: center;
+}
+
+.footer p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.footer span {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+
+
+
+
+

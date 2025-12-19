@@ -85,7 +85,7 @@ h1 {
     text-align: center;
 }
 
-/* Home */
+
 .home {
     text-align: center;
     padding: 50px;
@@ -160,21 +160,6 @@ h1 {
     color: #a00000;
 }
 
-/* .prev{
-    left: 0px;
-}
-
-.next{
-   right:0px; 
-} */
-
-@keyframes slide {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-100%); }
-    50% { transform: translateX(-200%); }
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(0); }
-}
 
 
 .sobre {
@@ -185,7 +170,27 @@ h1 {
 
 .sobre h2 {
     font-size: 28px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.Tecnologia {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    text-align: center;
+    background: #d60000;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.Tecnologia p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.8px;
+    text-align: center;
+    margin: 15px;
 }
 
 .sobre p {
@@ -196,10 +201,27 @@ h1 {
 }
 
 
-footer {
-    margin-top: 30px;
+.footer {
     background: #111;
     color: #fff;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 15px;
     text-align: center;
-    padding: 15px;
+}
+
+.footer p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.footer span {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #ccc;
 }

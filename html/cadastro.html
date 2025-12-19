@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Cadastro | SENAI Alunos</title>
     <link rel="stylesheet" href="../css/cadastro.css" />
   </head>
   <body>
@@ -13,7 +13,7 @@
       <div class="navbar-container">
         <div class="logo-senai">
           <img src="../img/logoSenai.jpg" alt="Logo SENAI" />
-          <span>ALUNOS</span>
+          <span>Alunos</span>
         </div>
 
         <ul class="nav-links">
@@ -29,33 +29,76 @@
       </div>
     </nav>
 
-    <hr />
+    <main>
+      <h1>Cadastre-se</h1>
 
-    <br /><br /><br /><br />
-    <br />
+      <section class="container">
+        <form id="loginForm" method="post">
+          <div class="group">
+            <label for="nome">Nome completo</label>
+            <input
+              type="text"
+              id="nome"
+              placeholder="Digite seu nome completo"
+              required
+            />
+          </div>
 
-    <form action="" class="form" method="post">
-      <h1>Cadastra-se</h1>
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        placeholder="Digite seu nome completo"
-      />
-      <br />
-      <input type="text" name="email" placeholder="Digite seu Email" />
-      <br />
-      <input type="password" name="senha" placeholder="Digite sua senha" />
-      <br /><br />
-      <button><a href="login.html">Cadastrar</a></button>
-      <p>Já possui login ?<a href="login.html"> Clique aqui</a></p>
-    </form>
+          <div class="group">
+            <label for="email">Email ou usuário</label>
+            <input
+              type="text"
+              id="email"
+              placeholder="Digite seuUsername / Email"
+              required
+            />
+          </div>
 
-    <footer>
-      <p>Desenvolvido pelos alunos do SENAI</p>
-      <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros | © 2025</p>
+          <div class="group">
+            <label for="ra">RA</label>
+            <input type="text" id="ra" placeholder="Digite o seu RA" required />
+          </div>
+
+          <div class="group">
+            <label for="telefone">Telefone</label>
+            <input
+              type="text"
+              id="telefone"
+              placeholder="Digite o seu Telefone"
+              required
+            />
+          </div>
+
+          <div class="group">
+            <label for="senha">Digite a sua Senha</label>
+            <input
+              type="password"
+              id="senha"
+              placeholder="Digite a sua Senha"
+              required
+            />
+          </div>
+
+          <button type="submit">Cadastrar-se</button>
+
+          <p>
+            Já possui login?
+            <a href="login.html">Login</a>
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <p>Desenvolvido pelos alunos do SENAI</p>
+        <p>
+          Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+          <span>© 2025</span>
+        </p>
+      </div>
     </footer>
 
-    <script src="../js/carteirinha.js"></script>
+    <script src="../js/cadastro.js"></script>
   </body>
 </html>

@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login | SENAI Alunos</title>
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
+
     <div class="faixa-topo"></div>
-    
+
     <nav class="navbar">
         <div class="navbar-container">
-
-          <!-- teste -->
             <div class="logo-senai">
                 <img src="../img/logoSenai.jpg" alt="Logo SENAI">
-                <span>ALUNOS</span>
+                <span>Alunos</span>
             </div>
 
             <ul class="nav-links">
@@ -26,34 +25,44 @@
                 <li><a href="cadastro.html">Cadastro</a></li>
                 <li><a href="login.html">Login</a></li>
             </ul>
-
         </div>
-        <hr>
-
-        <br><br><br><br>
-        <h1>Bem vindo!</h1>
-        <br>
-        <div class="container">
-            <br>
-          <section class="group">
-                <input type="text" id="nome" placeholder="Email/Username" >
-            </section>
-            <br>
-            <section class="group">
-                <input type="text" id="senha" placeholder="Password/Senha" >
-            </section>
-            <br>
-            <button><a href="carteirinha.html"></a>Login</button>
-            <br><br>
-            <p>Não possui login ?<a href="cadastro.html">
-                Cadastrar-se
-            </a></p>
-        </div>
-
-        <footer>
-            <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros | © 2025</p>
-        </footer>
     </nav>
+
+    
+    <main>
+        <h1>Bem-vindo!</h1>
+
+        <section class="container">
+            <form>
+                <div class="group">
+                    <label for="email">Email ou usuário</label>
+                    <input type="text" id="email" placeholder="Email/Username" required>
+                </div>
+
+                <div class="group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Senha" required>
+                </div>
+
+                <button type="submit">Login</button>
+
+                <p>
+                    Não possui login?
+                    <a href="cadastro.html">Cadastrar-se</a>
+                </p>
+            </form>
+        </section>
+    </main>
+
+
+   <footer class="footer">
+    <div class="footer-container">
+        <p>Desenvolvido pelos alunos do SENAI</p>
+        <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <span>© 2025</span>
+        </p>
+    </div>
+</footer>
+
 </body>
 </html>

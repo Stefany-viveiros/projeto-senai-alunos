@@ -16,15 +16,18 @@ document.getElementById("download-btn").addEventListener("click", function () {
     });
 });
 
-function alterarDados(){
-    const novoNome = document.getElementById("nome").value;
-    const novoRa = document.getElementById("ra").value;
-    const displayNome = document.getElementById("displayNome");
-    const displayRa = document.getElementById("displayRa");
+document.getElementById("nomeUsuario").textContent = sessionStorage.getItem("nome");
+document.getElementById("raUsuario").textContent = sessionStorage.getItem("ra");
 
-    if (novoNome.trim() !== '' && novoRa.trim() !== ''){
-        displayNome.textContent = novoNome;
-        displayRa.textContent = novoRa;
-    }
+// function alterarDados(){
+//     const novoNome = document.getElementById("nome").value;
+//     const novoRa = document.getElementById("ra").value;
+//     const displayNome = document.getElementById("displayNome");
+//     const displayRa = document.getElementById("displayRa");
 
-}
+//     if (novoNome.trim() !== '' && novoRa.trim() !== ''){
+//         displayNome.textContent = novoNome;
+//         displayRa.textContent = novoRa;
+//     }
+
+// }
