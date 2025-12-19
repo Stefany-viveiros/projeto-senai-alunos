@@ -1,12 +1,15 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
-const conexao = mysql.createConnection({
+const conexao = mysql.createPool({
     host:'localhost',
     port:'3306',
     user:'root',
     password: '',
-    database:'cadastro_pessoas'
+    database:'cadastro_pessoas',
+    waitForConnections:true,
+    connectionLimit:10,
+    queueLimit:0
 });
 
-conexao.connect();
+// conexao.connect();
 export default conexao;

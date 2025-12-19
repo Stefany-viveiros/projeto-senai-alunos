@@ -1,5 +1,5 @@
 import express from "express";
-import routes from "../routes/rotas.routes.js";
+import routes from "../routes/cadastro.routes.js";
 
 const app = express();
 
