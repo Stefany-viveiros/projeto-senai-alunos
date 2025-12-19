@@ -11,7 +11,6 @@
 
     <nav class="navbar">
       <div class="navbar-container">
-        <!-- teste -->
         <div class="logo-senai">
           <img src="../img/logoSenai.jpg" alt="Logo SENAI" />
           <span>ALUNOS</span>
@@ -28,45 +27,34 @@
           <li><a href="login.html">Login</a></li>
         </ul>
       </div>
-
-      <hr />
-
-      <br /><br /><br /><br />
-      <h1>Cadastre-Se</h1>
-      <br />
-      <div class="container">
-        <br />
-        <section class="group">
-          <input type="text" id="nome" placeholder="Nome Completo" />
-        </section>
-        <br />
-        <section class="group">
-          <input type="text" placeholder="Username/Email" />
-        </section>
-        <br />
-        <section>
-          <input type="number" id="ra" placeholder="RA" />
-        </section>
-        <br />
-        <section class="group">
-          <input type="text" id="telefone" placeholder="Telefone" />
-        </section>
-        <br />
-        <section class="group">
-          <input type="text" id="senha" placeholder="Password/Senha" />
-        </section>
-        <br />
-        <!-- <a onclick="alterarDados()" href="carteirinha.html">cadastrar</a> -->
-        <button onclick="alterarDados()" type="button"> <a href="carteirinha.html">Cadastrar-se</a></button>
-        <br /><br />
-        <p>Já possui login ?<a href="login.html"> Login </a></p>
-      </div>
-
-      <footer>
-        <p>Desenvolvido pelos alunos do SENAI</p>
-        <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros | © 2025</p>
-      </footer>
     </nav>
+
+    <hr />
+
+    <br /><br /><br /><br />
+    <br />
+
+    <form action="" class="form" method="post">
+      <h1>Cadastra-se</h1>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        placeholder="Digite seu nome completo"
+      />
+      <br />
+      <input type="text" name="email" placeholder="Digite seu Email" />
+      <br />
+      <input type="password" name="senha" placeholder="Digite sua senha" />
+      <br /><br />
+      <button><a href="login.html">Cadastrar</a></button>
+      <p>Já possui login ?<a href="login.html"> Clique aqui</a></p>
+    </form>
+
+    <footer>
+      <p>Desenvolvido pelos alunos do SENAI</p>
+      <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros | © 2025</p>
+    </footer>
 
     <script src="../js/carteirinha.js"></script>
   </body>

@@ -1,134 +1,148 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background: #CDC9C9;
-    color: #333;
+  background: white;
+  color: #333;
+  align-items: center;
+  justify-content:center ;
+  justify-items: center;
 }
 
-
 .faixa-topo {
-    width: 100%;
-    height: 25px;
-    background-color: #d60000;
+  width: 100%;
+  height: 25px;
+  background-color: #d60000;
 }
 
 .navbar {
-    width: 100%;
-    background-color: white;
-    border-bottom: 3px solid #d60000;
+  width: 100%;
+  background-color: white;
+  border-bottom: 3px solid #d60000;
 }
 
 .navbar-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo-senai {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
 }
 
 span {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 50px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 50px;
 }
 
 .logo-senai img {
-    width: 150px;
-    height: auto;
+  width: 150px;
+  height: auto;
 }
 
 .logo-senai span {
-    font-size: 18px;
-    font-weight: bold;
-    color: #d60000;
-    text-transform: uppercase;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d60000;
+  text-transform: uppercase;
 }
 
-
 .nav-links {
-    display: flex;
-    gap: 35px;
-    font-size: 30px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  gap: 35px;
+  font-size: 30px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-links a {
-    color: #333;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    transition: 0.5s ease-in-out;
+  color: #333;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.5s ease-in-out;
 }
 
 .nav-links a:hover {
-    color: #d60000;
+  color: #d60000;
 }
-
 
 h1 {
-    padding: 10px;
-    text-align: center;
-   color: red;
-   text-align: center;
+  padding: 10px;
+  text-align: center;
+  color: black;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 45px;
+  margin-bottom: 30px;
 }
 
-.container {
-   background-color: #bdbdbd;
-   border:#bdbdbd 2px solid ;
-   border-radius: 5px;
-   text-align: center;
-   align-items: center;
-   margin: 0px 500px 0px 500px;
+.form {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  align-items: center; 
+  justify-items: center;
+  margin-top: 100px;
+  width: 700px;
+  background: rgb(226, 226, 226);
+  box-shadow: #333 0px 0px 10px 1px;
+}
+
+.termos {
+  display: flex;
+  margin-right: 350px;
 }
 
 input {
-   background-color: rgb(255, 255, 255);
-   width: 500px;
-   padding: 10px;
-   border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  width: 500px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 button {
-    background-color:red;
-    border-radius: 25px;
-    border: #bdbdbd 2px solid;
-    padding: 20px;
-    width: 100px;
-    color:white;
-    text-decoration: none;
-    align-items: center;
+  background-color: red;
+  border-radius: 25px;
+  border: #bdbdbd 2px solid;
+  padding: 20px;
+  width: 100px;
+  color: white;
+  text-decoration: none;
+  align-items: center;
+  margin-bottom: 30px;
 }
 p {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 a {
-    color: red;
+  color: red;
+  text-decoration: none;
 }
 
-button a{
-    color: white;
-    text-decoration: none;
+button a {
+  color: white;
+  text-decoration: none;
 }
 
 footer {
-    margin-top: 30px;
-    background: #111;
-    color: #fff;
-    text-align: center;
-    padding: 15px;
+  margin-top: 375px;
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  width: 100%;
 }
