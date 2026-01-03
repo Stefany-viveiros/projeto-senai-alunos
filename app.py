@@ -136,14 +136,14 @@ def login():
 
     return render_template('login.html')
 
-# Logout
+
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
     flash('Logout realizado com sucesso!', 'sucesso')
     return redirect(url_for('home'))
 
-# Carteirinha
+
 @app.route('/carteirinha')
 def carteirinha():
     usuario = session.get('usuario')
