@@ -13,22 +13,21 @@
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo-senai">
-                <img src="../img/logoSenai.jpg" alt="Logo SENAI">
+                <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>Alunos</span>
             </div>
 
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="carteirinha.html">Carteirinha</a></li>
-                <li><a href="cadastro.html">Cadastro</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    
     <main>
         <h1>Bem-vindo!</h1>
 
@@ -48,21 +47,20 @@
 
                 <p>
                     Não possui login?
-                    <a href="cadastro.html">Cadastrar-se</a>
+                    <a href="{{ url_for('cadastro') }}">Cadastrar-se</a>
                 </p>
             </form>
         </section>
     </main>
 
-
-   <footer class="footer">
-    <div class="footer-container">
-        <p>Desenvolvido pelos alunos do SENAI</p>
-        <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
-            <span>© 2025</span>
-        </p>
-    </div>
-</footer>
+    <footer class="footer">
+        <div class="footer-container">
+            <p>Desenvolvido pelos alunos do SENAI</p>
+            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+                <span>© 2025</span>
+            </p>
+        </div>
+    </footer>
 
 </body>
 </html>

@@ -14,17 +14,17 @@
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo-senai">
-                <img src="../img/logoSenai.jpg" alt="Logo SENAI">
+                <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>Alunos</span>
             </div>
 
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
+           <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="carteirinha.html">Carteirinha</a></li>
-                <li><a href="cadastro.html">Cadastro</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
         </div>
     </nav>

@@ -14,13 +14,13 @@ def login():
 def cadastro():
     return render_template("cadastro.html")
 
-@app.route("/carteirinha")
-def carteirinha():
-    return render_template("carteirinha.html")
-
 @app.route("/sobre")
 def sobre():
     return render_template("sobre.html")
+
+@app.route("/carteirinha")
+def carteirinha():
+    return render_template("carteirinha.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
