@@ -4,27 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Projeto</title>
+    <title>Sobre o Projeto | SENAI Alunos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sobre.css') }}">
 </head>
 
 <body>
-
 
     <div class="faixa-topo"></div>
 
     <nav class="navbar">
         <div class="navbar-container">
 
-
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>ALUNOS</span>
             </div>
 
-           <ul class="nav-links">
+            <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+                <li><a href="{{ url_for('sobre') }}" class="active">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
                 <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
                 <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
@@ -33,7 +31,6 @@
 
         </div>
     </nav>
-
 
     <header>
         Sobre o Projeto SENAI-ALUNOS
@@ -57,11 +54,10 @@
         <p>
             O projeto utilizou tecnologias como HTML para estruturação, CSS para design e layout, JavaScript para
             interação e Git e GitHub para controle de versão. Essas ferramentas permitiram criar um site moderno,
-            responsivo e alinhado às boas práticas de desenvolvimento
+            responsivo e alinhado às boas práticas de desenvolvimento.
         </p>
 
         <h2>Tecnologias Utilizadas</h2>
-
         <div class="topicos">
             <div class="item">HTML</div>
             <div class="item">CSS</div>
@@ -77,16 +73,16 @@
         </div>
 
     </section>
-    
-    <footer class="footer">
-    <div class="footer-container">
-        <p>Desenvolvido pelos alunos do SENAI</p>
-        <p>
-            Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
-            <span>© 2025</span>
-        </p>
-    </div>
-</footer>
-</body>
 
+    <footer class="footer">
+        <div class="footer-container">
+            <p>Desenvolvido pelos alunos do SENAI</p>
+            <p>
+                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+                <span>© 2025</span>
+            </p>
+        </div>
+    </footer>
+
+</body>
 </html>

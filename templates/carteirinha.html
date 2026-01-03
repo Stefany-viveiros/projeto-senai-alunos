@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carteirinha do aluno</title>
+    <title>Carteirinha do Aluno | SENAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carteirinha.css') }}">
 </head>
 <body>
@@ -17,14 +17,14 @@
             <span>ALUNOS</span>
         </div>
 
-       <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
-                <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            </ul>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+            <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
+            <li><a href="{{ url_for('carteirinha') }}" class="active">Carteirinha</a></li>
+            <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        </ul>
     </div>
 </nav>
 
@@ -37,13 +37,14 @@
         </div>
 
         <div class="conteudo">
-            <img src="{{ url_for('static', filename='img/Carteirinha.png') }}" class="foto-aluno">
+            <img src="{{ url_for('static', filename='img/Carteirinha.png') }}" class="foto-aluno" alt="Foto do aluno">
 
             <div class="info">
-                <p id="displayNome"> <strong>Nome:</strong> Fernando Moreira</p></p>
-                <p id="displayRa"> <strong>RA:</strong>251488</p></p>
-                <p><strong>Curso:</strong> Desenvolvimento de Sistemas</p>
-                <p><strong>Turma:</strong> DS-1</p>
+                <p id="displayNome"><strong>Nome:</strong> {{ aluno.nome }}</p>
+                <p id="displayRa"><strong>RA:</strong> {{ aluno.ra }}</p>
+                <p><strong>Telefone:</strong> {{ aluno.telefone }}</p>
+                <p><strong>Curso:</strong> {{ aluno.curso }}</p>
+                <p><strong>Turma:</strong> {{ aluno.turma }}</p>
             </div>
 
             <div class="qrcode">
@@ -54,7 +55,7 @@
 
     <button id="download-btn" class="btn-download">Baixar Carteirinha</button>
 </div>
-   
+
 <footer class="footer">
     <div class="footer-container">
         <p>Desenvolvido pelos alunos do SENAI</p>
@@ -65,11 +66,11 @@
     </div>
 </footer>
 
+<!-- Biblioteca para gerar imagem da carteirinha -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-
+<!-- Script da carteirinha -->
 <script src="{{ url_for('static', filename='js/carteirinha.js') }}"></script>
-<!-- <script src="../js/carteirinha.js"></script> -->
 
 </body>
 </html>
