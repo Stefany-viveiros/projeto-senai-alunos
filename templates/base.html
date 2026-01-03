@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SENAI Alunos{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="faixa-topo"></div>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo-senai">
+      <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
+      <span>ALUNOS</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+      <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
+      <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+      <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+
+      {% if 'usuario' in session %}
+        <li class="user-status">
+          Aluno logado: <strong>{{ session['usuario']['nome'] }}</strong> |
+          <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
+        </li>
+      {% else %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<!-- Conteúdo da página -->
+{% block content %}{% endblock %}
+
+<footer class="footer">
+  <div class="footer-container">
+    <p>Desenvolvido pelos alunos do SENAI</p>
+    <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+      <span>© 2025</span>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
