@@ -79,6 +79,46 @@ span {
     color: #d60000;
 }
 
+.bem-vindo {
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    max-width: 700px;
+}
+
+.bem-vindo h2 {
+    font-size: 2rem;
+    color: #d60000;
+    margin-bottom: 10px;
+}
+
+.bem-vindo .nome-usuario {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.bem-vindo p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.bem-vindo .btn-primary {
+    background-color: #d60000;
+    color: #fff;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.bem-vindo .btn-primary:hover {
+    background-color: #ff4c4c;
+}
 
 h1 {
     padding: 10px;
