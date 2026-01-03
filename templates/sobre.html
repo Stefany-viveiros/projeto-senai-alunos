@@ -1,88 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Projeto | SENAI Alunos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/sobre.css') }}">
+    <title>SENAI Alunos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
-
     <div class="faixa-topo"></div>
 
     <nav class="navbar">
         <div class="navbar-container">
-
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>ALUNOS</span>
             </div>
 
             <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}" class="active">Sobre</a></li>
+                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
                 <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
                 <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
                 <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
-
         </div>
     </nav>
 
-    <header>
-        Sobre o Projeto SENAI-ALUNOS
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <header class="home">
+        <h1>Bem-vindo ao Portal dos Alunos SENAI</h1>
+        <p>Um site criado pelos alunos para apoiar estudantes do SENAI em seus cursos, projetos e organização.</p>
+
+        <div class="Tecnologia">
+            <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
+        </div>
     </header>
 
-    <section class="container">
-        <h2>Quem Somos</h2>
-
-        <p>
-            Este site foi desenvolvido pelos alunos do SENAI com o objetivo de facilitar o acesso
-            a informações importantes, como carteirinha de estudante, área do perfil, links úteis e muito mais.
-            A ideia é criar um portal simples, funcional e organizado, focado totalmente no aluno.
-        </p>
-
-        <p>
-            Nosso objetivo principal foi criar um site funcional, claro e acessível, demonstrando as habilidades
-            adquiridas ao longo do curso. Buscamos também desenvolver competências importantes para o mercado de
-            trabalho, como organização, comunicação e resolução de problemas.
-        </p>
-
-        <p>
-            O projeto utilizou tecnologias como HTML para estruturação, CSS para design e layout, JavaScript para
-            interação e Git e GitHub para controle de versão. Essas ferramentas permitiram criar um site moderno,
-            responsivo e alinhado às boas práticas de desenvolvimento.
-        </p>
-
-        <h2>Tecnologias Utilizadas</h2>
-        <div class="topicos">
-            <div class="item">HTML</div>
-            <div class="item">CSS</div>
-            <div class="item">JavaScript</div>
-            <div class="item">Git & GitHub</div>
-        </div>
-
-        <h2>Processo de Desenvolvimento</h2>
-        <div class="topicos">
-            <div class="item">Planejamento</div>
-            <div class="item">Design</div>
-            <div class="item">Desenvolvimento</div>
-        </div>
-
+    <section class="sobre">
+        <h2>Somos SENAI! Somos o futuro!</h2>
+        <p>“O conhecimento é o alimento da alma.” — Platão</p>
+        <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
+        <p>“A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.” — Einstein</p>
     </section>
 
     <footer class="footer">
         <div class="footer-container">
             <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>
-                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
                 <span>© 2025</span>
             </p>
         </div>
     </footer>
 
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro | SENAI Alunos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+    <title>Sobre o Projeto | SENAI Alunos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sobre.css') }}">
 </head>
 <body>
-
     <div class="faixa-topo"></div>
 
     <nav class="navbar">
@@ -19,80 +18,48 @@
 
             <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+                <li><a href="{{ url_for('sobre') }}" class="active">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
                 <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}" class="active">Cadastro</a></li>
+                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
                 <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    <main>
-        <h1>Cadastre-se</h1>
+    <header>
+        Sobre o Projeto SENAI-ALUNOS
+    </header>
 
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <ul class="flash-messages">
-              {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+    <section class="container">
+        <h2>Quem Somos</h2>
+        <p>Este site foi desenvolvido pelos alunos do SENAI com o objetivo de facilitar o acesso a informações importantes, como carteirinha de estudante, área do perfil, links úteis e muito mais.</p>
+        <p>Nosso objetivo principal foi criar um site funcional, claro e acessível, demonstrando as habilidades adquiridas ao longo do curso. Buscamos também desenvolver competências importantes para o mercado de trabalho, como organização, comunicação e resolução de problemas.</p>
+        <p>O projeto utilizou tecnologias como HTML, CSS, JavaScript, Git e GitHub, permitindo criar um site moderno, responsivo e alinhado às boas práticas de desenvolvimento.</p>
 
-        <section class="container">
-            <form method="POST" action="{{ url_for('cadastro') }}">
-                
-                <div class="group">
-                    <label for="nome">Nome completo</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
-                </div>
+        <h2>Tecnologias Utilizadas</h2>
+        <div class="topicos">
+            <div class="item">HTML</div>
+            <div class="item">CSS</div>
+            <div class="item">JavaScript</div>
+            <div class="item">Git & GitHub</div>
+        </div>
 
-                <div class="group">
-                    <label for="usuario">Email ou usuário</label>
-                    <input type="text" id="usuario" name="usuario" placeholder="Digite seu Username / Email" required>
-                </div>
-
-                <div class="group">
-                    <label for="ra">RA</label>
-                    <input type="text" id="ra" name="ra" placeholder="Digite o seu RA" required>
-                </div>
-
-                <div class="group">
-                    <label for="telefone">Telefone</label>
-                    <input type="text" id="telefone" name="telefone" placeholder="Digite o seu Telefone" required>
-                </div>
-
-                <div class="group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" placeholder="Digite a sua Senha" required>
-                </div>
-
-                <div class="group">
-                    <label for="senha_confirm">Confirme a senha</label>
-                    <input type="password" id="senha_confirm" name="senha_confirm" placeholder="Confirme a sua Senha" required>
-                </div>
-
-                <button type="submit">Cadastrar-se</button>
-
-                <p>
-                    Já possui login? <a href="{{ url_for('login') }}">Login</a>
-                </p>
-            </form>
-        </section>
-    </main>
+        <h2>Processo de Desenvolvimento</h2>
+        <div class="topicos">
+            <div class="item">Planejamento</div>
+            <div class="item">Design</div>
+            <div class="item">Desenvolvimento</div>
+        </div>
+    </section>
 
     <footer class="footer">
         <div class="footer-container">
             <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>
-                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
                 <span>© 2025</span>
             </p>
         </div>
     </footer>
-
 </body>
 </html>

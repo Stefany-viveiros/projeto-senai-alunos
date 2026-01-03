@@ -1,40 +1,49 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = 'uma_chave_super_secreta'  # necessário para sessão e flash
+app.secret_key = 'uma_chave_super_secreta'
 
-# Banco temporário de usuários
-usuarios = {}  # Exemplo de estrutura:
-# usuarios = {
-#     'fernando': {
-#         'senha': '123456',
-#         'nome': 'Fernando Moreira',
-#         'ra': '251488',
-#         'telefone': '11999999999'
-#     }
-# }
+# Upload de fotos
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# -------------------- ROTAS --------------------
+# Criar pasta uploads se não existir
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Home (index.html)
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Banco temporário
+usuarios = {}
+
+# ---------------- ROTAS ----------------
+
+# Home
 @app.route('/')
 def home():
     return render_template('index.html')
 
+# Sobre
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
 
 # Cadastro
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome = request.form['nome']
-        usuario = request.form['usuario']
-        ra = request.form['ra']
-        telefone = request.form['telefone']
-        senha = request.form['senha']
-        senha_confirm = request.form['senha_confirm']
+        nome = request.form.get('nome')
+        usuario = request.form.get('usuario')
+        ra = request.form.get('ra')
+        telefone = request.form.get('telefone')
+        curso = request.form.get('curso')
+        senha = request.form.get('senha')
+        senha_confirm = request.form.get('senha_confirm')
 
-        # Validação
-        if not nome or not usuario or not ra or not telefone or not senha or not senha_confirm:
+        if not nome or not usuario or not ra or not telefone or not curso or not senha or not senha_confirm:
             flash('Preencha todos os campos', 'erro')
             return redirect(url_for('cadastro'))
 
@@ -46,12 +55,33 @@ def cadastro():
             flash('Usuário já cadastrado', 'erro')
             return redirect(url_for('cadastro'))
 
-        # Salvar usuário completo
+        # Foto
+        if 'foto' not in request.files:
+            flash('Nenhuma foto selecionada', 'erro')
+            return redirect(url_for('cadastro'))
+
+        foto = request.files['foto']
+
+        if foto.filename == '':
+            flash('Nenhuma foto selecionada', 'erro')
+            return redirect(url_for('cadastro'))
+
+        if foto and allowed_file(foto.filename):
+            filename = secure_filename(foto.filename)
+            foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            flash('Formato de imagem inválido', 'erro')
+            return redirect(url_for('cadastro'))
+
+        # Salvar usuário
         usuarios[usuario] = {
             'senha': senha,
             'nome': nome,
             'ra': ra,
-            'telefone': telefone
+            'telefone': telefone,
+            'curso': curso,
+            'foto': filename,
+            'turma': 'DS-1'  # pode ajustar se quiser dinamizar
         }
 
         flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
@@ -64,11 +94,11 @@ def cadastro():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        usuario = request.form['usuario']
-        senha = request.form['senha']
+        usuario = request.form.get('usuario')
+        senha = request.form.get('senha')
 
         if usuario in usuarios and usuarios[usuario]['senha'] == senha:
-            session['usuario'] = usuario  # salva usuário logado
+            session['usuario'] = usuario
             flash(f'Bem-vindo, {usuarios[usuario]["nome"]}!', 'sucesso')
             return redirect(url_for('home'))
         else:
@@ -82,31 +112,21 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
-    flash('Você saiu da conta', 'sucesso')
-    return redirect(url_for('login'))
+    flash('Logout realizado com sucesso!', 'sucesso')
+    return redirect(url_for('home'))
 
 
 # Carteirinha
 @app.route('/carteirinha')
 def carteirinha():
-    if 'usuario' not in session:
-        flash('Faça login para acessar a carteirinha', 'erro')
+    usuario = session.get('usuario')
+    if not usuario:
+        flash('Você precisa estar logado para acessar a carteirinha', 'erro')
         return redirect(url_for('login'))
 
-    # Dados do usuário logado
-    aluno = usuarios[session['usuario']]
-    aluno['curso'] = 'Desenvolvimento de Sistemas'  # fixo
-    aluno['turma'] = 'DS-1'                         # fixo
-
+    aluno = usuarios[usuario]
     return render_template('carteirinha.html', aluno=aluno)
 
 
-# Sobre
-@app.route('/sobre')
-def sobre():
-    return render_template('sobre.html')
-
-
-# -------------------- RODAR APP --------------------
 if __name__ == '__main__':
     app.run(debug=True)

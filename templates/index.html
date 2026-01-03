@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENAI Alunos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
+</head>
+<body>
     <div class="faixa-topo"></div>
 
     <nav class="navbar">
         <div class="navbar-container">
-
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>ALUNOS</span>
@@ -25,47 +24,45 @@
                 <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
                 <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
-
         </div>
     </nav>
 
-    <header class="home">
-      <h1>Bem-vindo ao Portal dos Alunos SENAI</h1>
-      <p>
-        Um site criado pelos alunos para apoiar estudantes do SENAI em seus
-        cursos, projetos e organização.
-      </p>
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
-       <div class="Tecnologia">
-        <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
-      </div>
+    <header class="home">
+        <h1>Bem-vindo ao Portal dos Alunos SENAI</h1>
+        <p>Um site criado pelos alunos para apoiar estudantes do SENAI em seus cursos, projetos e organização.</p>
+
+        <div class="Tecnologia">
+            <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
+        </div>
     </header>
 
-    <div class="carrossel-container">
-        <button class="botao prev">&#10094;</button>
-        <img id="imagem" src="{{ url_for('static', filename='img/img1.png') }}" alt="Imagem 1">
-        <button class="botao next">&#10095;</button>
-        <div class="slide"></div>
-    </div>
-
     <section class="sobre">
-      <h2>Somos SENAI! Somos o futuro!</h2>
-
-      <p>“O conhecimento é o alimento da alma.” — Platão</p>
-      <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
-      <p>“A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.” — Einstein</p>
+        <h2>Somos SENAI! Somos o futuro!</h2>
+        <p>“O conhecimento é o alimento da alma.” — Platão</p>
+        <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
+        <p>“A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.” — Einstein</p>
     </section>
 
     <footer class="footer">
         <div class="footer-container">
             <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>
-                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
                 <span>© 2025</span>
             </p>
         </div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-  </body>
+</body>
 </html>
