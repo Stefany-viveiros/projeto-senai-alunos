@@ -33,12 +33,11 @@
 <div class="container">
     <div id="card" class="carteirinha">
         <div class="card-header">
-            <img src="../img/logoSenai.jpg" class="logo-card">
             <h2>SENAI - Identificação do Aluno</h2>
         </div>
 
         <div class="conteudo">
-            <img src="../img/carteirinha.png" class="foto-aluno">
+            <img src="{{ url_for('static', filename='img/Carteirinha.png') }}" class="foto-aluno">
 
             <div class="info">
                 <p id="displayNome"> <strong>Nome:</strong> Fernando Moreira</p></p>
@@ -69,7 +68,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
-<script src="../js/carteirinha.js"></script>
+<script src="{{ url_for('static', filename='js/carteirinha.js') }}"></script>
 <!-- <script src="../js/carteirinha.js"></script> -->
 
 </body>

@@ -44,6 +44,8 @@ body {
     width: 150px;
 }
 
+
+
 .logo-senai span {
     font-size: 18px;
     font-weight: bold;
@@ -128,9 +130,13 @@ body {
 
 .qrcode img {
     width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    margin:5px;
+    
 }
 
-/* Botão de download */
+
 .btn-download {
     margin-top: 20px;
     background: #d60000;
@@ -170,3 +176,4 @@ body {
     font-size: 13px;
     color: #ccc;
 }
+

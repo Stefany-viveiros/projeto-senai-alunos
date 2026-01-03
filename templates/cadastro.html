@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,80 +10,89 @@
 
     <div class="faixa-topo"></div>
 
-    
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
-                <span>Alunos</span>
+                <span>ALUNOS</span>
             </div>
 
-           <ul class="nav-links">
+            <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
                 <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+                <li><a href="{{ url_for('cadastro') }}" class="active">Cadastro</a></li>
                 <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    
     <main>
         <h1>Cadastre-se</h1>
 
-        <section class="container">
-            <form onsubmit="alterarDados(); return false;">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
 
+        <section class="container">
+            <form method="POST" action="{{ url_for('cadastro') }}">
+                
                 <div class="group">
                     <label for="nome">Nome completo</label>
-                    <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
                 </div>
 
                 <div class="group">
-                    <label for="email">Email ou usuário</label>
-                    <input type="text" id="email" placeholder="Digite seuUsername / Email" required>
+                    <label for="usuario">Email ou usuário</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Digite seu Username / Email" required>
                 </div>
 
                 <div class="group">
                     <label for="ra">RA</label>
-                    <input type="number" id="ra" placeholder="Digite o seu RA" required>
+                    <input type="text" id="ra" name="ra" placeholder="Digite o seu RA" required>
                 </div>
 
                 <div class="group">
                     <label for="telefone">Telefone</label>
-                    <input type="text" id="telefone" placeholder="Digite o seu Telefone" required>
+                    <input type="text" id="telefone" name="telefone" placeholder="Digite o seu Telefone" required>
                 </div>
 
                 <div class="group">
-                    <label for="senha">Digite a sua Senha</label>
-                    <input type="password" id="senha" placeholder="Digite a sua Senha" required>
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite a sua Senha" required>
+                </div>
+
+                <div class="group">
+                    <label for="senha_confirm">Confirme a senha</label>
+                    <input type="password" id="senha_confirm" name="senha_confirm" placeholder="Confirme a sua Senha" required>
                 </div>
 
                 <button type="submit">Cadastrar-se</button>
 
                 <p>
-                    Já possui login?
-                    <a href="login.html">Login</a>
+                    Já possui login? <a href="{{ url_for('login') }}">Login</a>
                 </p>
-
             </form>
         </section>
     </main>
 
-   
     <footer class="footer">
-    <div class="footer-container">
-        <p>Desenvolvido pelos alunos do SENAI</p>
-        <p>
-            Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
-            <span>© 2025</span>
-        </p>
-    </div>
-</footer>
-
-    <script src="../js/carteirinha.js"></script>
+        <div class="footer-container">
+            <p>Desenvolvido pelos alunos do SENAI</p>
+            <p>
+                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+                <span>© 2025</span>
+            </p>
+        </div>
+    </footer>
 
 </body>
 </html>
