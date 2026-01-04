@@ -28,7 +28,7 @@
                 {% if usuario %}
                     <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
                     <li class="usuario-logado">
-                        Olá, {{ usuario }} |
+                        Olá, {{ session.get('nome') }} |
                         <a href="{{ url_for('logout') }}">Sair</a>
                     </li>
                 {% else %}
