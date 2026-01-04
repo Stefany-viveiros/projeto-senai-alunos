@@ -6,7 +6,7 @@ import qrcode
 app = Flask(__name__)
 app.secret_key = 'uma_chave_super_secreta'
 
-# ---------------- CONFIGURAÇÕES ----------------
+# ================= CONFIGURAÇÕES =================
 
 UPLOAD_FOLDER = 'static/uploads'
 QR_FOLDER = 'static/qrcodes'
@@ -23,7 +23,7 @@ def allowed_file(filename):
 # "Banco de dados" temporário
 usuarios = {}
 
-# ---------------- FUNÇÕES ----------------
+# ================= FUNÇÃO QR CODE =================
 
 def gerar_qr_code(usuario, aluno):
     conteudo = f"Nome: {aluno['nome']}\nRA: {aluno['ra']}\nCurso: {aluno['curso']}"
@@ -31,13 +31,13 @@ def gerar_qr_code(usuario, aluno):
     qr.add_data(conteudo)
     qr.make(fit=True)
 
-    img = qr.make_image(fill='black', back_color='white')
+    img = qr.make_image(fill_color='black', back_color='white')
     caminho = f'{QR_FOLDER}/{usuario}.png'
     img.save(caminho)
 
     aluno['qr_code'] = caminho
 
-# ---------------- ROTAS ----------------
+# ================= ROTAS =================
 
 @app.route('/')
 def home():
@@ -47,10 +47,13 @@ def home():
 def sobre():
     return render_template('sobre.html')
 
-# ---------------- CADASTRO ----------------
+# ================= CADASTRO =================
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
+    erro = None
+    sucesso = None
+
     if request.method == 'POST':
         nome = request.form.get('nome')
         usuario = request.form.get('usuario')
@@ -59,50 +62,47 @@ def cadastro():
         curso = request.form.get('curso')
         senha = request.form.get('senha')
         senha_confirm = request.form.get('senha_confirm')
-
-        if not all([nome, usuario, ra, telefone, curso, senha, senha_confirm]):
-            flash('Preencha todos os campos', 'erro')
-            return redirect(url_for('cadastro'))
-
-        if senha != senha_confirm:
-            flash('As senhas não coincidem', 'erro')
-            return redirect(url_for('cadastro'))
-
-        if usuario in usuarios:
-            flash('Usuário já cadastrado', 'erro')
-            return redirect(url_for('cadastro'))
-
         foto = request.files.get('foto')
 
-        if not foto or foto.filename == '':
-            flash('Selecione uma foto', 'erro')
-            return redirect(url_for('cadastro'))
+        if not all([nome, usuario, ra, telefone, curso, senha, senha_confirm]):
+            erro = 'Preencha todos os campos'
 
-        if not allowed_file(foto.filename):
-            flash('Formato de imagem inválido', 'erro')
-            return redirect(url_for('cadastro'))
+        elif senha != senha_confirm:
+            erro = 'As senhas não coincidem'
 
-        filename = secure_filename(foto.filename)
-        foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        elif usuario in usuarios:
+            erro = 'Usuário já cadastrado'
 
-        usuarios[usuario] = {
-            'nome': nome,
-            'senha': senha,
-            'ra': ra,
-            'telefone': telefone,
-            'curso': curso,
-            'foto': filename,
-            'turma': 'DS-1'
-        }
+        elif not foto or foto.filename == '':
+            erro = 'Selecione uma foto'
 
-        gerar_qr_code(usuario, usuarios[usuario])
+        elif not allowed_file(foto.filename):
+            erro = 'Formato de imagem inválido'
 
-        flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
-        return redirect(url_for('login'))
+        else:
+            filename = secure_filename(foto.filename)
+            foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-    return render_template('cadastro.html')
+            usuarios[usuario] = {
+                'nome': nome,
+                'senha': senha,
+                'ra': ra,
+                'telefone': telefone,
+                'curso': curso,
+                'foto': filename,
+                'turma': 'DS-1'
+            }
 
-# ---------------- LOGIN ----------------
+            gerar_qr_code(usuario, usuarios[usuario])
+            sucesso = 'Cadastro realizado com sucesso!'
+
+    return render_template(
+        'cadastro.html',
+        erro=erro,
+        sucesso=sucesso
+    )
+
+# ================= LOGIN =================
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -122,14 +122,14 @@ def login():
 
     return render_template('login.html', erro=erro)
 
-# ---------------- LOGOUT ----------------
+# ================= LOGOUT =================
 
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
     return redirect(url_for('home'))
 
-# ---------------- CARTEIRINHA ----------------
+# ================= CARTEIRINHA =================
 
 @app.route('/carteirinha')
 def carteirinha():
@@ -141,7 +141,7 @@ def carteirinha():
     aluno = usuarios[usuario]
     return render_template('carteirinha.html', aluno=aluno)
 
-# ---------------- EXECUÇÃO ----------------
+# ================= EXECUÇÃO =================
 
 if __name__ == '__main__':
     app.run(debug=True)

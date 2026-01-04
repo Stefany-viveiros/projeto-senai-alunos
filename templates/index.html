@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+
+    <!-- Faixa vermelha superior -->
     <div class="faixa-topo"></div>
 
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-container">
+
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>ALUNOS</span>
@@ -20,44 +24,61 @@
                 <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
                 <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
+
+                {% if usuario %}
+                    <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+                    <li class="usuario-logado">
+                        Olá, {{ usuario }} |
+                        <a href="{{ url_for('logout') }}">Sair</a>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
             </ul>
+
         </div>
     </nav>
 
-    <!-- Flash messages -->
+    <!-- MENSAGENS FLASH -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash-messages">
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endwith %}
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <header class="home">
         <h1>Bem-vindo ao Portal dos Alunos SENAI</h1>
-        <p>Um site criado pelos alunos para apoiar estudantes do SENAI em seus cursos, projetos e organização.</p>
+        <p>
+            Um site criado pelos alunos para apoiar estudantes do SENAI
+            em seus cursos, projetos e organização.
+        </p>
 
         <div class="Tecnologia">
             <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
         </div>
     </header>
 
+    <!-- SOBRE -->
     <section class="sobre">
         <h2>Somos SENAI! Somos o futuro!</h2>
+
         <p>“O conhecimento é o alimento da alma.” — Platão</p>
         <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
         <p>“A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.” — Einstein</p>
     </section>
 
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-container">
             <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <p>
+                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
                 <span>© 2025</span>
             </p>
         </div>
