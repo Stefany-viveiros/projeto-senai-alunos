@@ -118,15 +118,17 @@ def login():
             erro = 'Usuário ou senha incorretos'
         else:
             session['usuario'] = usuario
+            session['nome'] = usuarios[usuario]['nome']
             return redirect(url_for('home'))
 
-    return render_template('login.html', erro=erro)
+    return render_template('login.html', erro=erro)o)
 
 # ================= LOGOUT =================
 
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
+    session.pop('nome', None)
     return redirect(url_for('home'))
 
 # ================= CARTEIRINHA =================

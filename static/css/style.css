@@ -532,5 +532,31 @@ h1 {
     color: #ccc;
 }
 
+/* ================= USUÁRIO LOGADO ================= */
+
+.usuario-logado {
+    color: #d60000;              /* vermelho SENAI */
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f9f9f9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.usuario-logado a {
+    color: #333;
+    text-decoration: none;
+    font-weight: normal;
+    transition: 0.2s;
+}
+
+.usuario-logado a:hover {
+    color: #d60000;
+    text-decoration: underline;
+}
 
 
