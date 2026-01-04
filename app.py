@@ -121,7 +121,7 @@ def login():
             session['nome'] = usuarios[usuario]['nome']
             return redirect(url_for('home'))
 
-    return render_template('login.html', erro=erro)o)
+    return render_template('login.html', erro=erro)
 
 # ================= LOGOUT =================
 
