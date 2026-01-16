@@ -1,3 +1,4 @@
+/* ================= RESET ================= */
 * {
     margin: 0;
     padding: 0;
@@ -5,24 +6,31 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ================= VARIÁVEIS SENAI ================= */
+:root {
+    --vermelho-senai: #c4161c;
+    --cinza-escuro: #333;
+    --cinza-claro: #f4f4f4;
+    --branco: #ffffff;
+}
+
+/* ================= BODY ================= */
 body {
-    background: #CDC9C9;
+    background-color: var(--cinza-claro);
+    color: var(--cinza-escuro);
 }
 
 /* ================= FAIXA TOPO ================= */
-
 .faixa-topo {
     width: 100%;
-    height: 25px;
-    background-color: #d60000;
+    height: 8px;
+    background-color: var(--vermelho-senai);
 }
 
 /* ================= NAVBAR ================= */
-
 .navbar {
-    width: 100%;
-    background: #fff;
-    border-bottom: 3px solid #d60000;
+    background-color: var(--branco);
+    border-bottom: 3px solid var(--vermelho-senai);
 }
 
 .navbar-container {
@@ -30,11 +38,11 @@ body {
     margin: auto;
     padding: 15px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
+/* LOGO */
 .logo-senai {
     display: flex;
     align-items: center;
@@ -42,163 +50,233 @@ body {
 }
 
 .logo-senai img {
-    width: 140px;
+    width: 45px;
 }
 
 .logo-senai span {
-    font-size: 18px;
     font-weight: bold;
-    color: #d60000;
-    text-transform: uppercase;
+    font-size: 20px;
+    color: var(--vermelho-senai);
 }
 
+/* LINKS */
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 30px;
+    align-items: center;
+    gap: 20px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #333;
-    font-size: 15px;
-    transition: 0.2s;
+    color: var(--cinza-escuro);
+    font-weight: bold;
 }
 
 .nav-links a:hover,
-.nav-links a.active {
-    color: #d60000;
-    font-weight: bold;
+.nav-links .active {
+    color: var(--vermelho-senai);
 }
 
-/* ================= MAIN ================= */
-
-main {
-    padding: 30px 15px;
+/* USUÁRIO LOGADO */
+.usuario-logado {
+    font-size: 14px;
 }
 
-main h1 {
+/* ================= HOME ================= */
+.home {
     text-align: center;
-    margin-bottom: 15px;
-    color: #333;
+    padding: 40px 20px;
 }
 
-/* ================= FORMULÁRIO ================= */
+.home h1 {
+    color: var(--vermelho-senai);
+    margin-bottom: 10px;
+}
 
-.container {
-    max-width: 450px;
-    background: #fff;
+.home p {
+    max-width: 700px;
     margin: auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.group {
-    margin-bottom: 15px;
-    text-align: left;
+/* ================= CARROSSEL ================= */
+.carousel {
+    position: relative;
+    max-width: 900px;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
-.group label {
-    font-size: 14px;
-    color: #333;
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+}
+
+.carousel-item img {
+    width: 100%;
     display: block;
-    margin-bottom: 5px;
 }
 
-.group input,
-.group select {
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-btn.prev {
+    left: 10px;
+}
+
+.carousel-btn.next {
+    right: 10px;
+}
+
+/* ================= FRASE SENAI ================= */
+.Tecnologia {
+    background-color: var(--vermelho-senai);
+    color: white;
+    padding: 15px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* ================= SOBRE ================= */
+.sobre {
+    background-color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.sobre h2 {
+    color: var(--vermelho-senai);
+    margin-bottom: 15px;
+}
+
+.sobre p {
+    margin-bottom: 10px;
+}
+
+/* ================= FORMULÁRIOS ================= */
+.form-container {
+    background-color: white;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: var(--vermelho-senai);
+    margin-bottom: 20px;
+}
+
+.form-container label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.form-container input,
+.form-container select {
     width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+    padding: 8px;
+    margin-top: 5px;
 }
 
-.group input:focus,
-.group select:focus {
-    outline: none;
-    border-color: #d60000;
+.form-container button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--vermelho-senai);
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-/* ================= MENSAGENS ================= */
+.form-container button:hover {
+    opacity: 0.9;
+}
 
-.mensagem {
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
+/* MENSAGENS */
+.erro {
+    background-color: #ffdddd;
+    color: #900;
+    padding: 10px;
     margin-bottom: 15px;
     text-align: center;
 }
 
-.mensagem.erro {
-    background-color: #ffe5e5;
-    color: #b00000;
-    border: 1px solid #ffb3b3;
-}
-
-.mensagem.sucesso {
-    background-color: #e6f7ea;
-    color: #7a1e1b;
-    border: 1px solid #a8e0b8;
-}
-
-/* ================= BOTÃO ================= */
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: #d60000;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #b80000;
-}
-
-/* ================= LINKS ================= */
-
-.container p {
-    margin-top: 15px;
-    font-size: 14px;
+.sucesso {
+    background-color: #ddffdd;
+    color: #060;
+    padding: 10px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
-.container a {
-    color: #d60000;
-    font-weight: bold;
-    text-decoration: none;
+/* ================= CARTEIRINHA ================= */
+.carteirinha-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+#card {
+    background-color: white;
+    width: 320px;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid var(--vermelho-senai);
+}
+
+#card img.foto {
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+#card h3 {
+    color: var(--vermelho-senai);
+}
+
+#qrcode-img {
+    margin-top: 10px;
+}
+
+#download-btn {
+    margin-top: 15px;
+    padding: 8px;
+    width: 100%;
+    background-color: var(--vermelho-senai);
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
 /* ================= FOOTER ================= */
-
 .footer {
-    background: #111;
-    color: #fff;
+    background-color: var(--cinza-escuro);
+    color: white;
+    padding: 20px;
+    text-align: center;
     margin-top: 40px;
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px 15px;
-    text-align: center;
-}
-
-.footer p {
-    font-size: 16px;
-    line-height: 1.5;
-}
-
 .footer span {
-    display: block;
-    margin-top: 5px;
-    font-size: 13px;
-    color: #ccc;
+    font-size: 12px;
 }
