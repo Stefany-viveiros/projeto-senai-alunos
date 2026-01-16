@@ -1,41 +1,41 @@
-// diretorio das imagens dentro de um array
-const imagens = [
-  "/img/img1.png",
-  "/img/img2.png",
-  "/img/img3.png",
-  "/img/img4.png",
-];
+// ================= CARROSSEL =================
 
-let imgAtual = 0;  // contador para as imagens
+// Seleciona os elementos
+const track = document.querySelector(".carousel-track");
+const slides = document.querySelectorAll(".carousel-item");
+const prevBtn = document.querySelector(".carousel-btn.prev");
+const nextBtn = document.querySelector(".carousel-btn.next");
 
-const img = document.getElementById("imagem");
-const next = document.querySelector(".next");
-const prev = document.querySelector(".prev");
+let index = 0;
 
-// botao para passar para a proxima imagem
-next.addEventListener("click", () =>{
-    imgAtual++; //ir para a proxima imagem
-    if(imgAtual >= imagens.length){
-        imgAtual = 0;
+// Atualiza a posição do carrossel
+function updateCarousel() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+}
+
+// Botão próximo
+nextBtn.addEventListener("click", () => {
+    index++;
+    if (index >= slides.length) {
+        index = 0;
     }
-    trocarImagem();
+    updateCarousel();
 });
 
-// botao para voltar para imagem anterior
-prev.addEventListener("click", () =>{
-    imgAtual--; //voltar para a proxima imagem
-    if(imgAtual < 0){
-        imgAtual = imagens.length - 1; // para deixar em loop
+// Botão anterior
+prevBtn.addEventListener("click", () => {
+    index--;
+    if (index < 0) {
+        index = slides.length - 1;
     }
-    trocarImagem();
+    updateCarousel();
 });
 
-// efeito de transição de imagem
-function trocarImagem(){
-    img.style.opacity = 0;
-
-    setTimeout(() =>{
-        img.src = imagens[imgAtual];
-        img.style.opacity = 1;
-    },200);
-};
+// Auto-play (opcional)
+setInterval(() => {
+    index++;
+    if (index >= slides.length) {
+        index = 0;
+    }
+    updateCarousel();
+}, 5000); // troca a cada 5 segundos

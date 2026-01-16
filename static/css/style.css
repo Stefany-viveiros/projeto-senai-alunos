@@ -21,7 +21,7 @@ body {
 /* ================= NAVBAR ================= */
 .navbar {
     width: 100%;
-    background-color: #fff;
+    background-color: white;
     border-bottom: 3px solid #d60000;
 }
 
@@ -30,4 +30,198 @@ body {
     margin: auto;
     padding: 15px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-senai {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.logo-senai img {
+    width: 150px;
+}
+
+.logo-senai span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d60000;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.5s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #d60000;
+}
+
+/* ================= USUÁRIO LOGADO ================= */
+.usuario-logado {
+    color: #d60000;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f9f9f9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.usuario-logado a {
+    color: #333;
+    text-decoration: none;
+}
+
+.usuario-logado a:hover {
+    color: #d60000;
+    text-decoration: underline;
+}
+
+/* ================= HOME ================= */
+.home {
+    text-align: center;
+    padding: 50px;
+    background: #ffffff;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.home h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.home p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* ================= TECNOLOGIA ================= */
+.Tecnologia {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    text-align: center;
+    background: #d60000;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.Tecnologia p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* ================= SOBRE ================= */
+.sobre {
+    padding: 50px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.sobre h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.sobre p {
+    max-width: 700px;
+    margin: 10px auto;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background: #111;
+    color: #fff;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 15px;
+    text-align: center;
+}
+
+.footer p {
+    font-size: 16px;
+}
+
+.footer span {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+/* ================= CARROSSEL (ADICIONADO) ================= */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+}
+
+.carousel-item img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+}
+
+/* Botões */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    font-size: 28px;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.carousel-btn.prev {
+    left: 10px;
+}
+
+.carousel-btn.next {
+    right: 10px;
+}
+
+.carousel-btn:hover {
+    background: #d60000;
 }
