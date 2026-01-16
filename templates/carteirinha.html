@@ -3,79 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carteirinha do Aluno | SENAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/carteirinha.css') }}">
+    <title>Cadastro | SENAI Alunos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
 </head>
 <body>
-    <div class="faixa-topo"></div>
 
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="logo-senai">
-                <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
-                <span>ALUNOS</span>
-            </div>
+<div class="faixa-topo"></div>
 
-            <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
-                <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="{{ url_for('carteirinha') }}" class="active">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+<nav class="navbar">
+    <div class="navbar-container">
+
+        <div class="logo-senai">
+            <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
+            <span>ALUNOS</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+            <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
+
+            {% if session.get('usuario') %}
+                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+                <li class="usuario-logado">
+                    Olá, {{ session.get('nome') }} |
+                    <a href="{{ url_for('logout') }}">Sair</a>
+                </li>
+            {% else %}
+                <li><a href="{{ url_for('cadastro') }}" class="active">Cadastro</a></li>
                 <li><a href="{{ url_for('login') }}">Login</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash-messages">
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
+            {% endif %}
         </ul>
-      {% endif %}
-    {% endwith %}
 
-    <h1 class="titulo">Carteirinha do Aluno</h1>
-
-    <div class="container">
-        <div id="card" class="carteirinha">
-            <div class="card-header">
-                <h2>SENAI - Identificação do Aluno</h2>
-            </div>
-
-            <div class="conteudo">
-                <img src="{{ url_for('static', filename='uploads/' ~ aluno.foto) }}" class="foto-aluno" alt="Foto do aluno">
-
-                <div class="info">
-                    <p><strong>Nome:</strong> {{ aluno.nome }}</p>
-                    <p><strong>RA:</strong> {{ aluno.ra }}</p>
-                    <p><strong>Telefone:</strong> {{ aluno.telefone }}</p>
-                    <p><strong>Curso:</strong> {{ aluno.curso }}</p>
-                    <p><strong>Turma:</strong> {{ aluno.turma }}</p>
-                </div>
-
-                <div class="qrcode">
-                    <img id="qrcode-img" alt="QR Code">
-                </div>
-            </div>
-        </div>
-
-        <button id="download-btn" class="btn-download">Baixar Carteirinha</button>
     </div>
+</nav>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <p>Desenvolvido pelos alunos do SENAI</p>
-            <p>Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
-                <span>© 2025</span>
+<main>
+    <h1>Cadastre-se</h1>
+
+    <section class="container">
+        <form method="POST" action="{{ url_for('cadastro') }}" enctype="multipart/form-data">
+
+            {% if erro %}
+                <div class="mensagem erro">{{ erro }}</div>
+            {% endif %}
+
+            {% if sucesso %}
+                <div class="mensagem sucesso">{{ sucesso }}</div>
+            {% endif %}
+
+            <div class="group">
+                <label for="nome">Nome completo</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div class="group">
+                <label for="usuario">Email ou usuário</label>
+                <input type="text" id="usuario" name="usuario" required>
+            </div>
+
+            <div class="group">
+                <label for="ra">RA</label>
+                <input type="text" id="ra" name="ra" required>
+            </div>
+
+            <div class="group">
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone" required>
+            </div>
+
+            <div class="group">
+                <label for="curso">Curso</label>
+                <select id="curso" name="curso" required>
+                    <option value="">Selecione seu curso</option>
+                    <option value="Desenvolvimento de Sistemas">Desenvolvimento de Sistemas</option>
+                    <option value="Administração">Administração</option>
+                    <option value="Automação Industrial">Automação Industrial</option>
+                </select>
+            </div>
+
+            <div class="group">
+                <label for="foto">Foto do aluno</label>
+                <input type="file" id="foto" name="foto" accept="image/*" required>
+            </div>
+
+            <div class="group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+
+            <div class="group">
+                <label for="senha_confirm">Confirme a senha</label>
+                <input type="password" id="senha_confirm" name="senha_confirm" required>
+            </div>
+
+            <button type="submit">Cadastrar-se</button>
+
+            <p>
+                Já possui login?
+                <a href="{{ url_for('login') }}">Login</a>
             </p>
-        </div>
-    </footer>
+        </form>
+    </section>
+</main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="{{ url_for('static', filename='js/carteirinha.js') }}"></script>
+<footer class="footer">
+    <div class="footer-container">
+        <p>Desenvolvido pelos alunos do SENAI</p>
+        <p>
+            Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <span>© 2025</span>
+        </p>
+    </div>
+</footer>
+
 </body>
 </html>

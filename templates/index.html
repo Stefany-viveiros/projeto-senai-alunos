@@ -48,6 +48,25 @@
             em seus cursos, projetos e organização.
         </p>
 
+        <!-- CARROSSEL -->
+        <section class="carousel">
+            <button class="carousel-btn prev">&#10094;</button>
+
+            <div class="carousel-track">
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='img/slide1.jpg') }}" alt="SENAI 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='img/slide2.jpg') }}" alt="SENAI 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='img/slide3.jpg') }}" alt="SENAI 3">
+                </div>
+            </div>
+
+            <button class="carousel-btn next">&#10095;</button>
+        </section>
+
         <div class="Tecnologia">
             <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
         </div>
@@ -71,6 +90,9 @@
             </p>
         </div>
     </footer>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
 </body>
 </html>
