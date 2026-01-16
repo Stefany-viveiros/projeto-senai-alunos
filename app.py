@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, session
 import os
 from werkzeug.utils import secure_filename
 import qrcode
@@ -20,13 +20,15 @@ os.makedirs(QR_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# "Banco de dados" temporário
+# ================= "BANCO DE DADOS" =================
+# (fica em memória — não some enquanto o servidor estiver rodando)
 usuarios = {}
 
-# ================= FUNÇÃO QR CODE =================
+# ================= QR CODE =================
 
 def gerar_qr_code(usuario, aluno):
     conteudo = f"Nome: {aluno['nome']}\nRA: {aluno['ra']}\nCurso: {aluno['curso']}"
+
     qr = qrcode.QRCode(version=1, box_size=10, border=4)
     qr.add_data(conteudo)
     qr.make(fit=True)
@@ -41,11 +43,19 @@ def gerar_qr_code(usuario, aluno):
 
 @app.route('/')
 def home():
-    return render_template('index.html', usuario=session.get('usuario'))
+    return render_template(
+        'index.html',
+        usuario=session.get('usuario'),
+        nome=session.get('nome')
+    )
 
 @app.route('/sobre')
 def sobre():
-    return render_template('sobre.html')
+    return render_template(
+        'sobre.html',
+        usuario=session.get('usuario'),
+        nome=session.get('nome')
+    )
 
 # ================= CADASTRO =================
 
@@ -99,7 +109,9 @@ def cadastro():
     return render_template(
         'cadastro.html',
         erro=erro,
-        sucesso=sucesso
+        sucesso=sucesso,
+        usuario=session.get('usuario'),
+        nome=session.get('nome')
     )
 
 # ================= LOGIN =================
@@ -121,14 +133,18 @@ def login():
             session['nome'] = usuarios[usuario]['nome']
             return redirect(url_for('home'))
 
-    return render_template('login.html', erro=erro)
+    return render_template(
+        'login.html',
+        erro=erro,
+        usuario=session.get('usuario'),
+        nome=session.get('nome')
+    )
 
 # ================= LOGOUT =================
 
 @app.route('/logout')
 def logout():
-    session.pop('usuario', None)
-    session.pop('nome', None)
+    session.clear()
     return redirect(url_for('home'))
 
 # ================= CARTEIRINHA =================
@@ -141,7 +157,13 @@ def carteirinha():
         return redirect(url_for('login'))
 
     aluno = usuarios[usuario]
-    return render_template('carteirinha.html', aluno=aluno)
+
+    return render_template(
+        'carteirinha.html',
+        aluno=aluno,
+        usuario=session.get('usuario'),
+        nome=session.get('nome')
+    )
 
 # ================= EXECUÇÃO =================
 
