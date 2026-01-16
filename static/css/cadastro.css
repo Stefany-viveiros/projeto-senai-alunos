@@ -6,31 +6,24 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ================= VARIÁVEIS SENAI ================= */
-:root {
-    --vermelho-senai: #c4161c;
-    --cinza-escuro: #333;
-    --cinza-claro: #f4f4f4;
-    --branco: #ffffff;
-}
-
 /* ================= BODY ================= */
 body {
-    background-color: var(--cinza-claro);
-    color: var(--cinza-escuro);
+    background: #CDC9C9;
+    color: #333;
 }
 
 /* ================= FAIXA TOPO ================= */
 .faixa-topo {
     width: 100%;
-    height: 8px;
-    background-color: var(--vermelho-senai);
+    height: 25px;
+    background-color: #d60000;
 }
 
 /* ================= NAVBAR ================= */
 .navbar {
-    background-color: var(--branco);
-    border-bottom: 3px solid var(--vermelho-senai);
+    width: 100%;
+    background: #fff;
+    border-bottom: 3px solid #d60000;
 }
 
 .navbar-container {
@@ -38,11 +31,10 @@ body {
     margin: auto;
     padding: 15px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
-/* LOGO */
 .logo-senai {
     display: flex;
     align-items: center;
@@ -50,233 +42,179 @@ body {
 }
 
 .logo-senai img {
-    width: 45px;
+    width: 140px;
 }
 
 .logo-senai span {
+    font-size: 18px;
     font-weight: bold;
-    font-size: 20px;
-    color: var(--vermelho-senai);
+    color: #d60000;
+    text-transform: uppercase;
 }
 
-/* LINKS */
 .nav-links {
     list-style: none;
     display: flex;
-    align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--cinza-escuro);
-    font-weight: bold;
+    color: #333;
+    font-size: 15px;
 }
 
 .nav-links a:hover,
-.nav-links .active {
-    color: var(--vermelho-senai);
+.nav-links a.active {
+    color: #d60000;
+    font-weight: bold;
 }
 
-/* USUÁRIO LOGADO */
-.usuario-logado {
+/* ================= MAIN ================= */
+main {
+    padding: 40px 15px;
+}
+
+main h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ================= CONTAINER FORM ================= */
+.container {
+    max-width: 420px;
+    background: #fff;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* ================= FORM GROUP ================= */
+.group {
+    margin-bottom: 15px;
+}
+
+.group label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.group input,
+.group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
     font-size: 14px;
 }
 
-/* ================= HOME ================= */
-.home {
-    text-align: center;
-    padding: 40px 20px;
+.group input:focus,
+.group select:focus {
+    border-color: #d60000;
+    outline: none;
+    box-shadow: 0 0 5px rgba(214,0,0,0.5);
 }
 
-.home h1 {
-    color: var(--vermelho-senai);
-    margin-bottom: 10px;
-}
-
-.home p {
-    max-width: 700px;
-    margin: auto;
-}
-
-/* ================= CARROSSEL ================= */
-.carousel {
-    position: relative;
-    max-width: 900px;
-    margin: 30px auto;
-    overflow: hidden;
-    border-radius: 10px;
-}
-
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-item {
-    min-width: 100%;
-}
-
-.carousel-item img {
+/* ================= BOTÃO ================= */
+button {
     width: 100%;
-    display: block;
-}
-
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.5);
-    color: white;
+    padding: 12px;
+    background: #d60000;
+    color: #fff;
     border: none;
-    font-size: 30px;
-    padding: 10px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-}
-
-.carousel-btn.prev {
-    left: 10px;
-}
-
-.carousel-btn.next {
-    right: 10px;
-}
-
-/* ================= FRASE SENAI ================= */
-.Tecnologia {
-    background-color: var(--vermelho-senai);
-    color: white;
-    padding: 15px;
-    margin-top: 20px;
-    font-weight: bold;
-}
-
-/* ================= SOBRE ================= */
-.sobre {
-    background-color: white;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.sobre h2 {
-    color: var(--vermelho-senai);
-    margin-bottom: 15px;
-}
-
-.sobre p {
-    margin-bottom: 10px;
-}
-
-/* ================= FORMULÁRIOS ================= */
-.form-container {
-    background-color: white;
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.form-container h2 {
-    text-align: center;
-    color: var(--vermelho-senai);
-    margin-bottom: 20px;
-}
-
-.form-container label {
-    font-weight: bold;
-    display: block;
     margin-top: 10px;
+    transition: 0.3s;
 }
 
-.form-container input,
-.form-container select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+button:hover {
+    background: #b80000;
 }
 
-.form-container button {
-    width: 100%;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: var(--vermelho-senai);
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.form-container button:hover {
-    opacity: 0.9;
-}
-
-/* MENSAGENS */
-.erro {
-    background-color: #ffdddd;
-    color: #900;
-    padding: 10px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.sucesso {
-    background-color: #ddffdd;
-    color: #060;
-    padding: 10px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* ================= CARTEIRINHA ================= */
-.carteirinha-container {
-    display: flex;
-    justify-content: center;
-    margin: 40px 0;
-}
-
-#card {
-    background-color: white;
-    width: 320px;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    border: 2px solid var(--vermelho-senai);
-}
-
-#card img.foto {
-    width: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-#card h3 {
-    color: var(--vermelho-senai);
-}
-
-#qrcode-img {
-    margin-top: 10px;
-}
-
-#download-btn {
+/* ================= LINKS ABAIXO FORM ================= */
+.container p {
     margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.container a {
+    color: #d60000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+/* ================= MENSAGENS (ERRO / SUCESSO) ================= */
+.mensagem-erro {
+    background: #ffe5e5;
+    color: #b00000;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 16px;
     padding: 8px;
-    width: 100%;
-    background-color: var(--vermelho-senai);
-    color: white;
-    border: none;
-    cursor: pointer;
+    text-align: center;
+}
+
+.mensagem-sucesso {
+    background: #e6f7e6;
+    color: #006400;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 /* ================= FOOTER ================= */
 .footer {
-    background-color: var(--cinza-escuro);
-    color: white;
-    padding: 20px;
+    background: #111;
+    color: #fff;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px 15px;
     text-align: center;
-    margin-top: 40px;
+}
+
+.footer p {
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .footer span {
-    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+/* ================= RESPONSIVIDADE ================= */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
 }

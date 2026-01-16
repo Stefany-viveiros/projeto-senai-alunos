@@ -10,21 +10,31 @@
 
     <div class="faixa-topo"></div>
 
-    <nav class="navbar">
+     <nav class="navbar">
         <div class="navbar-container">
+
             <div class="logo-senai">
                 <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
                 <span>ALUNOS</span>
             </div>
 
             <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
                 <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-                <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
-                <li><a href="{{ url_for('login') }}" class="active">Login</a></li>
+
+                {% if session.get('usuario') %}
+                    <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
+                    <li class="usuario-logado">
+                        Olá, <strong>{{ session.get('nome') }}</strong> |
+                        <a href="{{ url_for('logout') }}">Sair</a>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
             </ul>
+
         </div>
     </nav>
 
