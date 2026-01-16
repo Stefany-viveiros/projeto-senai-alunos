@@ -36,7 +36,7 @@ body {
 .logo-senai {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
     margin-top: 10px;
 }
 
@@ -48,7 +48,7 @@ span {
 }
 .logo-senai img {
     width: 150px;
-    height: auto;
+    
 }
 
 
@@ -62,27 +62,49 @@ span {
 
 .nav-links {
     display: flex;
-    gap: 35px;
-    color:#d60000;
-    font-size: 30px;
-    text-align: center;
-    list-style: none;      
-    padding: 0;           
-    margin: 0;            
+    gap: 35px;     
+    list-style: none;
 }
 
 
 .nav-links a {
     color: #333;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 500;
-    transition: 0.2s ease-in-out;
+    transition: 0.5s ease-in-out;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .active {
     color: #d60000;
 }
+
+
+/* ================= USUÁRIO LOGADO ================= */
+.usuario-logado {
+    color: #d60000;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f9f9f9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.usuario-logado a {
+    color: #333;
+    text-decoration: none;
+}
+
+.usuario-logado a:hover {
+    color: #d60000;
+    text-decoration: underline;
+}
+
 .menu {
     list-style: none;
     display: flex;
