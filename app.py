@@ -11,8 +11,8 @@ app.secret_key = 'chave_super_secreta_senai'
 # ================= CONFIGURAÇÕES =================
 UPLOAD_FOLDER = 'static/uploads'
 QR_FOLDER = 'static/qrcodes'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 DATABASE = 'alunos.db'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -25,10 +25,9 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-def init_db():
+def criar_tabela():
     conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("""
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS alunos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
@@ -44,7 +43,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+criar_tabela()
 
 # ================= FUNÇÕES AUXILIARES =================
 def allowed_file(filename):
@@ -97,8 +96,7 @@ def cadastro():
 
         try:
             conn = get_db()
-            cursor = conn.cursor()
-            cursor.execute("""
+            conn.execute("""
                 INSERT INTO alunos (nome, usuario, ra, telefone, curso, turma, foto, senha)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (nome, usuario, ra, telefone, curso, 'DS-2025', filename, senha_hash))
@@ -108,14 +106,12 @@ def cadastro():
             flash('Usuário já cadastrado.', 'erro')
             return redirect(url_for('cadastro'))
 
-        aluno = {
+        gerar_qr_code(usuario, {
             'nome': nome,
             'ra': ra,
             'curso': curso,
             'turma': 'DS-2025'
-        }
-
-        gerar_qr_code(usuario, aluno)
+        })
 
         flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
         return redirect(url_for('login'))
@@ -130,9 +126,10 @@ def login():
         senha = request.form['senha']
 
         conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM alunos WHERE usuario = ?", (usuario,))
-        aluno = cursor.fetchone()
+        aluno = conn.execute(
+            "SELECT * FROM alunos WHERE usuario = ?",
+            (usuario,)
+        ).fetchone()
         conn.close()
 
         if not aluno or not check_password_hash(aluno['senha'], senha):
@@ -162,9 +159,10 @@ def carteirinha():
         return redirect(url_for('login'))
 
     conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM alunos WHERE usuario = ?", (session['usuario'],))
-    aluno = cursor.fetchone()
+    aluno = conn.execute(
+        "SELECT * FROM alunos WHERE usuario = ?",
+        (session['usuario'],)
+    ).fetchone()
     conn.close()
 
     return render_template('carteirinha.html', aluno=aluno)

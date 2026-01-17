@@ -22,8 +22,7 @@
 
             <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                <!-- LINK SOBRE COMO ÂNCORA (SEM FLASK) -->
-                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
 
                 {% if session.get('usuario') %}
@@ -80,14 +79,6 @@
         </section>
     </header>
 
-    <!-- SOBRE (ÂNCORA) -->
-    <section class="sobre" id="sobre">
-        <h2>Somos SENAI! Somos o futuro!</h2>
-        <p>“O conhecimento é o alimento da alma.” — Platão</p>
-        <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
-        <p>“A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.” — Albert Einstein</p>
-    </section>
-
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-container">
@@ -104,4 +95,3 @@
 
 </body>
 </html>
-
