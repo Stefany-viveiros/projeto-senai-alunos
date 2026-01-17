@@ -7,7 +7,6 @@ app = Flask(__name__)
 app.secret_key = 'uma_chave_super_secreta'
 
 # ================= CONFIGURAÇÕES =================
-
 UPLOAD_FOLDER = 'static/uploads'
 QR_FOLDER = 'static/qrcodes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -21,7 +20,7 @@ os.makedirs(QR_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# ================= BANCO DE DADOS =================
+# ================= "BANCO DE DADOS" (MEMÓRIA) =================
 usuarios = {}
 
 # ================= QR CODE =================
@@ -34,81 +33,64 @@ def gerar_qr_code(usuario, aluno):
 
     img = qr.make_image(fill_color='black', back_color='white')
 
-    # Salvar apenas o nome do arquivo
     filename = f"{usuario}.png"
     caminho = os.path.join(QR_FOLDER, filename)
     img.save(caminho)
 
     aluno['qr_code'] = filename
 
-# ================= ROTAS =================
-
+# ================= SESSÃO =================
 @app.before_request
 def check_session():
-    # Se a sessão tiver usuário inválido, limpa
     if 'usuario' in session and session['usuario'] not in usuarios:
         session.clear()
 
+def get_nome_logado():
+    usuario = session.get('usuario')
+    if usuario in usuarios:
+        return usuarios[usuario]['nome']
+    return "Visitante"
+
+# ================= ROTAS =================
 @app.route('/')
 def home():
-    return render_template('index.html', usuario=session.get('usuario'))
+    nome = get_nome_logado()
+    return render_template('index.html', nome=nome)
 
 @app.route('/sobre')
 def sobre():
-    return render_template('sobre.html', usuario=session.get('usuario'))
+    nome = get_nome_logado()
+    return render_template('sobre.html', nome=nome)
 
 # ================= CADASTRO =================
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
+    nome_logado = get_nome_logado()
+
     if request.method == 'POST':
         nome = request.form.get('nome')
         usuario = request.form.get('usuario')
-        ra = request.form.get('ra')
-        telefone = request.form.get('telefone')
-        curso = request.form.get('curso')
         senha = request.form.get('senha')
-        senha_confirm = request.form.get('senha_confirm')
-        foto = request.files.get('foto')
-
-        if not all([nome, usuario, ra, telefone, curso, senha, senha_confirm]):
-            flash('Preencha todos os campos', 'erro')
-            return redirect(url_for('cadastro'))
-
-        if senha != senha_confirm:
-            flash('As senhas não coincidem', 'erro')
-            return redirect(url_for('cadastro'))
+        ra = request.form.get('ra')
+        curso = request.form.get('curso')
 
         if usuario in usuarios:
-            flash('Usuário já cadastrado', 'erro')
+            flash('Usuário já existe')
             return redirect(url_for('cadastro'))
 
-        if not foto or foto.filename == '':
-            flash('Selecione uma foto', 'erro')
-            return redirect(url_for('cadastro'))
-
-        if not allowed_file(foto.filename):
-            flash('Formato de imagem inválido', 'erro')
-            return redirect(url_for('cadastro'))
-
-        filename = secure_filename(foto.filename)
-        foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        # Salvar usuário
         usuarios[usuario] = {
             'nome': nome,
             'senha': senha,
             'ra': ra,
-            'telefone': telefone,
-            'curso': curso,
-            'foto': filename,
-            'turma': 'DS-1'
+            'curso': curso
         }
 
         gerar_qr_code(usuario, usuarios[usuario])
-        flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
+
+        flash('Cadastro realizado com sucesso!')
         return redirect(url_for('login'))
 
-    return render_template('cadastro.html', usuario=session.get('usuario'))
+    return render_template('cadastro.html', nome=nome_logado)
 
 # ================= LOGIN =================
 @app.route('/login', methods=['GET', 'POST'])
@@ -117,35 +99,33 @@ def login():
         usuario = request.form.get('usuario')
         senha = request.form.get('senha')
 
-        if usuario not in usuarios:
-            flash('Usuário não cadastrado', 'erro')
-        elif usuarios[usuario]['senha'] != senha:
-            flash('Usuário ou senha incorretos', 'erro')
-        else:
+        if usuario in usuarios and usuarios[usuario]['senha'] == senha:
             session['usuario'] = usuario
-            flash(f'Bem-vindo, {usuarios[usuario]["nome"]}!', 'sucesso')
+            flash('Login realizado com sucesso!')
             return redirect(url_for('home'))
 
-    return render_template('login.html', usuario=session.get('usuario'))
+        flash('Usuário ou senha inválidos')
+
+    return render_template('login.html')
 
 # ================= LOGOUT =================
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Logout realizado com sucesso!', 'sucesso')
+    flash('Você saiu do sistema')
     return redirect(url_for('home'))
 
-# ================= CARTEIRINHA =================
-@app.route('/carteirinha')
-def carteirinha():
+# ================= PERFIL =================
+@app.route('/perfil')
+def perfil():
     usuario = session.get('usuario')
-    if not usuario or usuario not in usuarios:
-        flash('Faça login para acessar a carteirinha', 'erro')
+
+    if not usuario:
         return redirect(url_for('login'))
 
-    aluno = usuarios[usuario]
-    return render_template('carteirinha.html', aluno=aluno, usuario=usuario)
+    aluno = usuarios.get(usuario)
+    return render_template('perfil.html', aluno=aluno)
 
-# ================= EXECUÇÃO =================
-if __name__ == '__main__':
+# ================= INICIAR SERVIDOR =================
+if __name__ == "__main__":
     app.run(debug=True)
