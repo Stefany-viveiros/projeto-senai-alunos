@@ -1,111 +1,128 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
-import qrcode
+from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'uma_chave_super_secreta'
+app.secret_key = "chave_super_secreta_123"
 
-# ================= CONFIG BANCO =================
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'alunos.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# ================= CONFIG ADMIN =================
+ADMIN_EMAIL = "admin@senai.com"
 
-db = SQLAlchemy(app)
+# ================= BANCO =================
+def get_db():
+    conn = sqlite3.connect("database.db")
+    conn.row_factory = sqlite3.Row
+    return conn
 
-# ================= MODELO =================
-class Aluno(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    usuario = db.Column(db.String(50), unique=True, nullable=False)
-    senha = db.Column(db.String(200), nullable=False)
-    ra = db.Column(db.String(30), nullable=False)
-    curso = db.Column(db.String(100), nullable=False)
-    qr_code = db.Column(db.String(100))
+def criar_tabelas():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-# ================= QR CODE =================
-QR_FOLDER = 'static/qrcodes'
-os.makedirs(QR_FOLDER, exist_ok=True)
+criar_tabelas()
 
-def gerar_qr_code(usuario, aluno):
-    conteudo = f"Nome: {aluno.nome}\nRA: {aluno.ra}\nCurso: {aluno.curso}"
-    qr = qrcode.make(conteudo)
+# ================= DECORATORS =================
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "usuario" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
 
-    filename = f"{usuario}.png"
-    caminho = os.path.join(QR_FOLDER, filename)
-    qr.save(caminho)
-
-    aluno.qr_code = filename
-    db.session.commit()
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("email") != ADMIN_EMAIL:
+            return redirect(url_for("home"))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # ================= ROTAS =================
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/cadastro', methods=['GET', 'POST'])
+@app.route("/sobre")
+def sobre():
+    return render_template("sobre.html")
+
+@app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
-    if request.method == 'POST':
-        usuario = request.form['usuario']
+    if request.method == "POST":
+        nome = request.form["nome"]
+        email = request.form["email"]
+        senha = generate_password_hash(request.form["senha"])
 
-        if Aluno.query.filter_by(usuario=usuario).first():
-            flash('Usuário já existe', 'erro')
-            return redirect(url_for('cadastro'))
+        try:
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)",
+                (nome, email, senha)
+            )
+            conn.commit()
+            conn.close()
+            flash("Cadastro realizado com sucesso! Faça login.", "success")
+            return redirect(url_for("login"))
+        except sqlite3.IntegrityError:
+            flash("Este email já está cadastrado.", "error")
 
-        senha_hash = generate_password_hash(request.form['senha'])
+    return render_template("cadastro.html")
 
-        aluno = Aluno(
-            nome=request.form['nome'],
-            usuario=usuario,
-            senha=senha_hash,
-            ra=request.form['ra'],
-            curso=request.form['curso']
-        )
-
-        db.session.add(aluno)
-        db.session.commit()
-
-        gerar_qr_code(usuario, aluno)
-
-        flash('Cadastro realizado! Faça login.', 'sucesso')
-        return redirect(url_for('login'))
-
-    return render_template('cadastro.html')
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'POST':
-        usuario = request.form['usuario']
-        senha = request.form['senha']
+    if request.method == "POST":
+        email = request.form["email"]
+        senha = request.form["senha"]
 
-        aluno = Aluno.query.filter_by(usuario=usuario).first()
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
+        usuario = cursor.fetchone()
+        conn.close()
 
-        if aluno and check_password_hash(aluno.senha, senha):
-            session['usuario'] = aluno.usuario
-            session['nome'] = aluno.nome
-            return redirect(url_for('home'))
+        if usuario and check_password_hash(usuario["senha"], senha):
+            session["usuario"] = usuario["id"]
+            session["nome"] = usuario["nome"]
+            session["email"] = usuario["email"]
+            return redirect(url_for("home"))
         else:
-            flash('Usuário ou senha inválidos', 'erro')
-            return redirect(url_for('login'))
+            flash("Usuário ou senha inválidos.", "error")
 
-    return render_template('login.html')
+    return render_template("login.html")
 
-@app.route('/perfil')
-def perfil():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-
-    aluno = Aluno.query.filter_by(usuario=session['usuario']).first()
-    return render_template('perfil.html', aluno=aluno)
-
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for("home"))
 
-# ================= START =================
+@app.route("/admin")
+@login_required
+@admin_required
+def admin():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nome, email FROM usuarios")
+    usuarios = cursor.fetchall()
+    conn.close()
+    return render_template("admin.html", usuarios=usuarios)
+
+@app.route("/carteirinha")
+@login_required
+def carteirinha():
+    return "<h1>Carteirinha do Aluno</h1>"
+
+# ================= EXEC =================
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)

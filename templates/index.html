@@ -1,4 +1,4 @@
-+<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,8 @@
 
             <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+                <!-- LINK SOBRE COMO ÂNCORA (SEM FLASK) -->
+                <li><a href="#sobre">Sobre</a></li>
                 <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
 
                 {% if session.get('usuario') %}
@@ -49,11 +50,10 @@
             em seus cursos, projetos e organização.
         </p>
 
-
         <div class="Tecnologia">
             <p>Tecnologia, criatividade e futuro do jeito SENAI!</p>
         </div>
-        
+
         <!-- CARROSSEL -->
         <section class="carousel">
             <button class="carousel-btn prev">&#10094;</button>
@@ -78,12 +78,10 @@
 
             <button class="carousel-btn next">&#10095;</button>
         </section>
-
-        
     </header>
 
-    <!-- SOBRE -->
-    <section class="sobre">
+    <!-- SOBRE (ÂNCORA) -->
+    <section class="sobre" id="sobre">
         <h2>Somos SENAI! Somos o futuro!</h2>
         <p>“O conhecimento é o alimento da alma.” — Platão</p>
         <p>“A educação é a arma mais poderosa que você pode usar para mudar o mundo.” — Nelson Mandela</p>
@@ -106,3 +104,4 @@
 
 </body>
 </html>
+
