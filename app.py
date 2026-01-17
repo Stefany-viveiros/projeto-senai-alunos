@@ -1,128 +1,131 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-import sqlite3
+import os
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-from functools import wraps
+import qrcode
 
 app = Flask(__name__)
-app.secret_key = "chave_super_secreta_123"
+app.secret_key = 'chave_super_secreta_senai'
 
-# ================= CONFIG ADMIN =================
-ADMIN_EMAIL = "admin@senai.com"
+# ================= CONFIGURAÇÕES =================
+UPLOAD_FOLDER = 'static/uploads'
+QR_FOLDER = 'static/qrcodes'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-# ================= BANCO =================
-def get_db():
-    conn = sqlite3.connect("database.db")
-    conn.row_factory = sqlite3.Row
-    return conn
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def criar_tabelas():
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            senha TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(QR_FOLDER, exist_ok=True)
 
-criar_tabelas()
+# ================= "BANCO" TEMPORÁRIO =================
+usuarios = {}
 
-# ================= DECORATORS =================
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "usuario" not in session:
-            return redirect(url_for("login"))
-        return f(*args, **kwargs)
-    return decorated_function
+# ================= FUNÇÕES AUXILIARES =================
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("email") != ADMIN_EMAIL:
-            return redirect(url_for("home"))
-        return f(*args, **kwargs)
-    return decorated_function
+def gerar_qr_code(usuario, aluno):
+    conteudo = f"""
+Nome: {aluno['nome']}
+RA: {aluno['ra']}
+Curso: {aluno['curso']}
+Turma: {aluno['turma']}
+"""
+    qr = qrcode.make(conteudo)
+    qr.save(os.path.join(QR_FOLDER, f"{usuario}.png"))
 
 # ================= ROTAS =================
-@app.route("/")
+@app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template('index.html')
 
-@app.route("/sobre")
+@app.route('/sobre')
 def sobre():
-    return render_template("sobre.html")
+    return render_template('sobre.html')
 
-@app.route("/cadastro", methods=["GET", "POST"])
+# ================= CADASTRO =================
+@app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
-    if request.method == "POST":
-        nome = request.form["nome"]
-        email = request.form["email"]
-        senha = generate_password_hash(request.form["senha"])
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        usuario = request.form.get('usuario')
+        ra = request.form.get('ra')
+        telefone = request.form.get('telefone')
+        curso = request.form.get('curso')
+        senha = request.form.get('senha')
+        senha_confirm = request.form.get('senha_confirm')
+        foto = request.files.get('foto')
 
-        try:
-            conn = get_db()
-            cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)",
-                (nome, email, senha)
-            )
-            conn.commit()
-            conn.close()
-            flash("Cadastro realizado com sucesso! Faça login.", "success")
-            return redirect(url_for("login"))
-        except sqlite3.IntegrityError:
-            flash("Este email já está cadastrado.", "error")
+        if usuario in usuarios:
+            flash('Usuário já cadastrado.', 'erro')
+            return redirect(url_for('cadastro'))
 
-    return render_template("cadastro.html")
+        if senha != senha_confirm:
+            flash('As senhas não conferem.', 'erro')
+            return redirect(url_for('cadastro'))
 
-@app.route("/login", methods=["GET", "POST"])
+        if not foto or not allowed_file(foto.filename):
+            flash('Foto inválida.', 'erro')
+            return redirect(url_for('cadastro'))
+
+        filename = secure_filename(foto.filename)
+        foto.save(os.path.join(UPLOAD_FOLDER, filename))
+
+        usuarios[usuario] = {
+            'nome': nome,
+            'ra': ra,
+            'telefone': telefone,
+            'curso': curso,
+            'turma': 'DS-2025',
+            'foto': filename,
+            'senha': generate_password_hash(senha)
+        }
+
+        gerar_qr_code(usuario, usuarios[usuario])
+
+        flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
+        return redirect(url_for('login'))
+
+    return render_template('cadastro.html')
+
+# ================= LOGIN =================
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        senha = request.form["senha"]
+    if request.method == 'POST':
+        usuario = request.form.get('usuario')
+        senha = request.form.get('senha')
 
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
-        usuario = cursor.fetchone()
-        conn.close()
+        if usuario not in usuarios or not check_password_hash(usuarios[usuario]['senha'], senha):
+            flash('Usuário ou senha inválidos.', 'erro')
+            return redirect(url_for('login'))
 
-        if usuario and check_password_hash(usuario["senha"], senha):
-            session["usuario"] = usuario["id"]
-            session["nome"] = usuario["nome"]
-            session["email"] = usuario["email"]
-            return redirect(url_for("home"))
-        else:
-            flash("Usuário ou senha inválidos.", "error")
+        session['usuario'] = usuario
+        session['nome'] = usuarios[usuario]['nome']
 
-    return render_template("login.html")
+        flash('Login realizado com sucesso!', 'sucesso')
+        return redirect(url_for('home'))
 
-@app.route("/logout")
+    return render_template('login.html')
+
+# ================= LOGOUT =================
+@app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for("home"))
+    flash('Você saiu da conta.', 'sucesso')
+    return redirect(url_for('login'))
 
-@app.route("/admin")
-@login_required
-@admin_required
-def admin():
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT nome, email FROM usuarios")
-    usuarios = cursor.fetchall()
-    conn.close()
-    return render_template("admin.html", usuarios=usuarios)
-
-@app.route("/carteirinha")
-@login_required
+# ================= CARTEIRINHA =================
+@app.route('/carteirinha')
 def carteirinha():
-    return "<h1>Carteirinha do Aluno</h1>"
+    if 'usuario' not in session:
+        flash('Faça login para acessar a carteirinha.', 'erro')
+        return redirect(url_for('login'))
 
-# ================= EXEC =================
-if __name__ == "__main__":
+    usuario = session['usuario']
+    aluno = usuarios.get(usuario)
+
+    return render_template('carteirinha.html', aluno=aluno)
+
+# ================= EXECUÇÃO =================
+if __name__ == '__main__':
     app.run(debug=True)
