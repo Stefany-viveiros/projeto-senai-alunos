@@ -8,90 +8,89 @@
 </head>
 <body>
 
-    <div class="faixa-topo"></div>
+<div class="faixa-topo"></div>
 
-     <nav class="navbar">
-        <div class="navbar-container">
-
-            <div class="logo-senai">
-                <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
-                <span>ALUNOS</span>
-            </div>
-
-            <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
-                <li><a target="_blank" href="https://www.sp.senai.br">SENAI OFICIAL</a></li>
-
-                {% if session.get('usuario') %}
-                    <li><a href="{{ url_for('carteirinha') }}">Carteirinha</a></li>
-                    <li class="usuario-logado">
-                        Olá, <strong>{{ session.get('nome') }}</strong> |
-                        <a href="{{ url_for('logout') }}">Sair</a>
-                    </li>
-                {% else %}
-                    <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                {% endif %}
-            </ul>
-
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo-senai">
+            <img src="{{ url_for('static', filename='img/logoSenai.jpg') }}" alt="Logo SENAI">
+            <span>ALUNOS</span>
         </div>
-    </nav>
 
-    <main>
-        <h1>Bem-vindo!</h1>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('sobre') }}">Sobre</a></li>
+            <li><a href="{{ url_for('cadastro') }}">Cadastro</a></li>
+            <li><a href="{{ url_for('login') }}" class="active">Login</a></li>
+        </ul>
+    </div>
+</nav>
 
-        <section class="container">
-            <form method="POST" action="{{ url_for('login') }}">
+<main>
+    <h1>Bem-vindo!</h1>
 
-                <!-- MENSAGEM DE ERRO -->
-                {% if erro %}
+    <section class="container">
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <!-- MENSAGEM DE ERRO -->
+            {% with messages = get_flashed_messages(category_filter=['erro']) %}
+                {% if messages %}
                     <div class="mensagem-erro">
-                        {{ erro }}
+                        {{ messages[0] }}
                     </div>
                 {% endif %}
+            {% endwith %}
 
-                <div class="group">
-                    <label for="usuario">Email ou usuário</label>
-                    <input
-                        type="text"
-                        id="usuario"
-                        name="usuario"
-                        placeholder="Digite seu Username / Email"
-                        required
-                    >
-                </div>
+            <!-- MENSAGEM DE SUCESSO -->
+            {% with messages = get_flashed_messages(category_filter=['sucesso']) %}
+                {% if messages %}
+                    <div class="mensagem-sucesso">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
-                <div class="group">
-                    <label for="senha">Senha</label>
-                    <input
-                        type="password"
-                        id="senha"
-                        name="senha"
-                        placeholder="Digite sua senha"
-                        required
-                    >
-                </div>
+            <div class="group">
+                <label for="usuario">Email ou usuário</label>
+                <input
+                    type="text"
+                    id="usuario"
+                    name="usuario"
+                    placeholder="Digite seu Username / Email"
+                    required
+                >
+            </div>
 
-                <button type="submit">Login</button>
+            <div class="group">
+                <label for="senha">Senha</label>
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    placeholder="Digite sua senha"
+                    required
+                >
+            </div>
 
-                <p>
-                    Não possui login?
-                    <a href="{{ url_for('cadastro') }}">Cadastre-se</a>
-                </p>
-            </form>
-        </section>
-    </main>
+            <button type="submit">Login</button>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <p>Desenvolvido pelos alunos do SENAI</p>
             <p>
-                Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
-                <span>© 2025</span>
+                Não possui login?
+                <a href="{{ url_for('cadastro') }}">Cadastre-se</a>
             </p>
-        </div>
-    </footer>
+        </form>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <p>Desenvolvido pelos alunos do SENAI</p>
+        <p>
+            Leandro de Souza | Nicolas Eduardo | Stefany Viveiros
+            <span>© 2025</span>
+        </p>
+    </div>
+</footer>
 
 </body>
 </html>

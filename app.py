@@ -1,131 +1,111 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from werkzeug.utils import secure_filename
 import qrcode
 
 app = Flask(__name__)
 app.secret_key = 'uma_chave_super_secreta'
 
-# ================= CONFIGURAÇÕES =================
-UPLOAD_FOLDER = 'static/uploads'
-QR_FOLDER = 'static/qrcodes'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+# ================= CONFIG BANCO =================
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'alunos.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+db = SQLAlchemy(app)
 
-# Criar pastas se não existirem
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(QR_FOLDER, exist_ok=True)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# ================= "BANCO DE DADOS" (MEMÓRIA) =================
-usuarios = {}
+# ================= MODELO =================
+class Aluno(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    usuario = db.Column(db.String(50), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+    ra = db.Column(db.String(30), nullable=False)
+    curso = db.Column(db.String(100), nullable=False)
+    qr_code = db.Column(db.String(100))
 
 # ================= QR CODE =================
+QR_FOLDER = 'static/qrcodes'
+os.makedirs(QR_FOLDER, exist_ok=True)
+
 def gerar_qr_code(usuario, aluno):
-    conteudo = f"Nome: {aluno['nome']}\nRA: {aluno['ra']}\nCurso: {aluno['curso']}"
-
-    qr = qrcode.QRCode(version=1, box_size=10, border=4)
-    qr.add_data(conteudo)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill_color='black', back_color='white')
+    conteudo = f"Nome: {aluno.nome}\nRA: {aluno.ra}\nCurso: {aluno.curso}"
+    qr = qrcode.make(conteudo)
 
     filename = f"{usuario}.png"
     caminho = os.path.join(QR_FOLDER, filename)
-    img.save(caminho)
+    qr.save(caminho)
 
-    aluno['qr_code'] = filename
-
-# ================= SESSÃO =================
-@app.before_request
-def check_session():
-    if 'usuario' in session and session['usuario'] not in usuarios:
-        session.clear()
-
-def get_nome_logado():
-    usuario = session.get('usuario')
-    if usuario in usuarios:
-        return usuarios[usuario]['nome']
-    return "Visitante"
+    aluno.qr_code = filename
+    db.session.commit()
 
 # ================= ROTAS =================
 @app.route('/')
 def home():
-    nome = get_nome_logado()
-    return render_template('index.html', nome=nome)
+    return render_template('index.html')
 
-@app.route('/sobre')
-def sobre():
-    nome = get_nome_logado()
-    return render_template('sobre.html', nome=nome)
-
-# ================= CADASTRO =================
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
-    nome_logado = get_nome_logado()
-
     if request.method == 'POST':
-        nome = request.form.get('nome')
-        usuario = request.form.get('usuario')
-        senha = request.form.get('senha')
-        ra = request.form.get('ra')
-        curso = request.form.get('curso')
+        usuario = request.form['usuario']
 
-        if usuario in usuarios:
-            flash('Usuário já existe')
+        if Aluno.query.filter_by(usuario=usuario).first():
+            flash('Usuário já existe', 'erro')
             return redirect(url_for('cadastro'))
 
-        usuarios[usuario] = {
-            'nome': nome,
-            'senha': senha,
-            'ra': ra,
-            'curso': curso
-        }
+        senha_hash = generate_password_hash(request.form['senha'])
 
-        gerar_qr_code(usuario, usuarios[usuario])
+        aluno = Aluno(
+            nome=request.form['nome'],
+            usuario=usuario,
+            senha=senha_hash,
+            ra=request.form['ra'],
+            curso=request.form['curso']
+        )
 
-        flash('Cadastro realizado com sucesso!')
+        db.session.add(aluno)
+        db.session.commit()
+
+        gerar_qr_code(usuario, aluno)
+
+        flash('Cadastro realizado! Faça login.', 'sucesso')
         return redirect(url_for('login'))
 
-    return render_template('cadastro.html', nome=nome_logado)
+    return render_template('cadastro.html')
 
-# ================= LOGIN =================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        usuario = request.form.get('usuario')
-        senha = request.form.get('senha')
+        usuario = request.form['usuario']
+        senha = request.form['senha']
 
-        if usuario in usuarios and usuarios[usuario]['senha'] == senha:
-            session['usuario'] = usuario
-            flash('Login realizado com sucesso!')
+        aluno = Aluno.query.filter_by(usuario=usuario).first()
+
+        if aluno and check_password_hash(aluno.senha, senha):
+            session['usuario'] = aluno.usuario
+            session['nome'] = aluno.nome
             return redirect(url_for('home'))
-
-        flash('Usuário ou senha inválidos')
+        else:
+            flash('Usuário ou senha inválidos', 'erro')
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
-# ================= LOGOUT =================
+@app.route('/perfil')
+def perfil():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    aluno = Aluno.query.filter_by(usuario=session['usuario']).first()
+    return render_template('perfil.html', aluno=aluno)
+
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Você saiu do sistema')
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
-# ================= PERFIL =================
-@app.route('/perfil')
-def perfil():
-    usuario = session.get('usuario')
-
-    if not usuario:
-        return redirect(url_for('login'))
-
-    aluno = usuarios.get(usuario)
-    return render_template('perfil.html', aluno=aluno)
-
-# ================= INICIAR SERVIDOR =================
+# ================= START =================
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
