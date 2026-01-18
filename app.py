@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import qrcode
-import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = 'chave_super_secreta_senai'
@@ -14,20 +14,27 @@ QR_FOLDER = 'static/qrcodes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(QR_FOLDER, exist_ok=True)
 
-# ================= CONEXÃO COM MYSQL =================
-db_config = {
-    'host': 'localhost',
-    'user': 'root',          # seu usuário MySQL
-    'password': '',          # sua senha MySQL
-    'database': 'senai_alunos'
-}
+# ================= CONFIGURAÇÃO MYSQL =================
+# Substitua usuário, senha e database pelos seus
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:senha@localhost/senai_alunos'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-def get_db_connection():
-    return mysql.connector.connect(**db_config)
+db = SQLAlchemy(app)
+
+# ================= MODELO =================
+class Aluno(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(150), nullable=False)
+    usuario = db.Column(db.String(100), unique=True, nullable=False)
+    ra = db.Column(db.String(50), nullable=False)
+    telefone = db.Column(db.String(50), nullable=False)
+    curso = db.Column(db.String(100), nullable=False)
+    turma = db.Column(db.String(50), nullable=False, default='DS-2025')
+    foto = db.Column(db.String(200), nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
 
 # ================= FUNÇÕES AUXILIARES =================
 def allowed_file(filename):
@@ -35,10 +42,10 @@ def allowed_file(filename):
 
 def gerar_qr_code(usuario, aluno):
     conteudo = f"""
-Nome: {aluno['nome']}
-RA: {aluno['ra']}
-Curso: {aluno['curso']}
-Turma: {aluno['turma']}
+Nome: {aluno.nome}
+RA: {aluno.ra}
+Curso: {aluno.curso}
+Turma: {aluno.turma}
 """
     qr = qrcode.make(conteudo)
     qr.save(os.path.join(QR_FOLDER, f"{usuario}.png"))
@@ -65,6 +72,10 @@ def cadastro():
         senha_confirm = request.form.get('senha_confirm')
         foto = request.files.get('foto')
 
+        if Aluno.query.filter_by(usuario=usuario).first():
+            flash('Usuário já cadastrado.', 'erro')
+            return redirect(url_for('cadastro'))
+
         if senha != senha_confirm:
             flash('As senhas não conferem.', 'erro')
             return redirect(url_for('cadastro'))
@@ -76,38 +87,18 @@ def cadastro():
         filename = secure_filename(foto.filename)
         foto.save(os.path.join(UPLOAD_FOLDER, filename))
 
-        # Conectar ao banco e inserir
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        aluno = Aluno(
+            nome=nome,
+            usuario=usuario,
+            ra=ra,
+            telefone=telefone,
+            curso=curso,
+            foto=filename,
+            senha=generate_password_hash(senha)
+        )
+        db.session.add(aluno)
+        db.session.commit()
 
-        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
-        existing_user = cursor.fetchone()
-        if existing_user:
-            flash('Usuário já cadastrado.', 'erro')
-            cursor.close()
-            conn.close()
-            return redirect(url_for('cadastro'))
-
-        hashed_password = generate_password_hash(senha)
-        turma = 'DS-2025'
-
-        cursor.execute("""
-            INSERT INTO usuarios (nome, usuario, ra, telefone, curso, turma, foto, senha)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (nome, usuario, ra, telefone, curso, turma, filename, hashed_password))
-
-        conn.commit()
-        cursor.close()
-        conn.close()
-
-        # Gerar QR code
-        aluno = {
-            'nome': nome,
-            'ra': ra,
-            'curso': curso,
-            'turma': turma,
-            'foto': filename
-        }
         gerar_qr_code(usuario, aluno)
 
         flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
@@ -122,19 +113,14 @@ def login():
         usuario = request.form.get('usuario')
         senha = request.form.get('senha')
 
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
-        aluno = cursor.fetchone()
-        cursor.close()
-        conn.close()
+        aluno = Aluno.query.filter_by(usuario=usuario).first()
 
-        if not aluno or not check_password_hash(aluno['senha'], senha):
+        if not aluno or not check_password_hash(aluno.senha, senha):
             flash('Usuário ou senha inválidos.', 'erro')
             return redirect(url_for('login'))
 
-        session['usuario'] = usuario
-        session['nome'] = aluno['nome']
+        session['usuario'] = aluno.usuario
+        session['nome'] = aluno.nome
 
         flash('Login realizado com sucesso!', 'sucesso')
         return redirect(url_for('home'))
@@ -155,17 +141,11 @@ def carteirinha():
         flash('Faça login para acessar a carteirinha.', 'erro')
         return redirect(url_for('login'))
 
-    usuario = session['usuario']
-
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
-    aluno = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
+    aluno = Aluno.query.filter_by(usuario=session['usuario']).first()
     return render_template('carteirinha.html', aluno=aluno)
 
 # ================= EXECUÇÃO =================
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # cria as tabelas se não existirem
     app.run(debug=True)
