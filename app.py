@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 import qrcode
-import sqlite3
+import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = 'chave_super_secreta_senai'
@@ -14,10 +14,20 @@ QR_FOLDER = 'static/qrcodes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(QR_FOLDER, exist_ok=True)
 
-DATABASE = 'alunos.db'
+# ================= CONEXÃO COM MYSQL =================
+db_config = {
+    'host': 'localhost',
+    'user': 'root',          # seu usuário MySQL
+    'password': '',          # sua senha MySQL
+    'database': 'senai_alunos'
+}
+
+def get_db_connection():
+    return mysql.connector.connect(**db_config)
 
 # ================= FUNÇÕES AUXILIARES =================
 def allowed_file(filename):
@@ -32,32 +42,6 @@ Turma: {aluno['turma']}
 """
     qr = qrcode.make(conteudo)
     qr.save(os.path.join(QR_FOLDER, f"{usuario}.png"))
-
-def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def criar_tabela():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            usuario TEXT UNIQUE NOT NULL,
-            ra TEXT NOT NULL,
-            telefone TEXT,
-            curso TEXT,
-            turma TEXT,
-            foto TEXT,
-            senha TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-criar_tabela()
 
 # ================= ROTAS =================
 @app.route('/')
@@ -92,30 +76,42 @@ def cadastro():
         filename = secure_filename(foto.filename)
         foto.save(os.path.join(UPLOAD_FOLDER, filename))
 
-        try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO usuarios (nome, usuario, ra, telefone, curso, turma, foto, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                           (nome, usuario, ra, telefone, curso, 'DS-2025', filename, generate_password_hash(senha)))
-            conn.commit()
-            conn.close()
+        # Conectar ao banco e inserir
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-            # Gerar QR code
-            aluno = {
-                'nome': nome,
-                'ra': ra,
-                'curso': curso,
-                'turma': 'DS-2025',
-                'foto': filename
-            }
-            gerar_qr_code(usuario, aluno)
-
-            flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
-            return redirect(url_for('login'))
-
-        except sqlite3.IntegrityError:
+        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
+        existing_user = cursor.fetchone()
+        if existing_user:
             flash('Usuário já cadastrado.', 'erro')
+            cursor.close()
+            conn.close()
             return redirect(url_for('cadastro'))
+
+        hashed_password = generate_password_hash(senha)
+        turma = 'DS-2025'
+
+        cursor.execute("""
+            INSERT INTO usuarios (nome, usuario, ra, telefone, curso, turma, foto, senha)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (nome, usuario, ra, telefone, curso, turma, filename, hashed_password))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        # Gerar QR code
+        aluno = {
+            'nome': nome,
+            'ra': ra,
+            'curso': curso,
+            'turma': turma,
+            'foto': filename
+        }
+        gerar_qr_code(usuario, aluno)
+
+        flash('Cadastro realizado com sucesso! Faça login.', 'sucesso')
+        return redirect(url_for('login'))
 
     return render_template('cadastro.html')
 
@@ -127,17 +123,18 @@ def login():
         senha = request.form.get('senha')
 
         conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
-        user = cursor.fetchone()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
+        aluno = cursor.fetchone()
+        cursor.close()
         conn.close()
 
-        if user is None or not check_password_hash(user['senha'], senha):
+        if not aluno or not check_password_hash(aluno['senha'], senha):
             flash('Usuário ou senha inválidos.', 'erro')
             return redirect(url_for('login'))
 
         session['usuario'] = usuario
-        session['nome'] = user['nome']
+        session['nome'] = aluno['nome']
 
         flash('Login realizado com sucesso!', 'sucesso')
         return redirect(url_for('home'))
@@ -159,10 +156,12 @@ def carteirinha():
         return redirect(url_for('login'))
 
     usuario = session['usuario']
+
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))
     aluno = cursor.fetchone()
+    cursor.close()
     conn.close()
 
     return render_template('carteirinha.html', aluno=aluno)
