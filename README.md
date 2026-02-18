@@ -1,5 +1,10 @@
 Projeto SENAI Alunos – Sistema de Carteirinha do Aluno
+
+
 Acesso online: https://projeto-senai-alunos.onrender.com/
+
+⚠️ **Atenção:** O site está hospedado em plano gratuito do Render. Em alguns momentos, ele pode demorar para carregar ou ficar offline temporariamente.  
+
 
 Projeto desenvolvido no SENAI como parte da avaliação do curso de Programação Full Stack, com foco em desenvolvimento web.
 
