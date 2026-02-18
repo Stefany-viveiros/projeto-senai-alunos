@@ -1,2 +1,6 @@
 flask
 gunicorn
+flask_sqlalchemy
+pymysql
+qrcode
+pillow
