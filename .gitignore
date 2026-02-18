@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.pyc
+
+# Flask
+instance/
+
+# Banco local
+*.db
