@@ -6,20 +6,33 @@ import os
 import qrcode
 
 app = Flask(__name__)
-app.secret_key = 'chave_super_secreta_senai'
+app.secret_key = os.getenv("SECRET_KEY", "chave_super_secreta_senai")
 
 # ================= CONFIGURAÇÕES =================
-UPLOAD_FOLDER = 'static/uploads'
-QR_FOLDER = 'static/qrcodes'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
+QR_FOLDER = os.path.join(BASE_DIR, 'static', 'qrcodes')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(QR_FOLDER, exist_ok=True)
 
-# ================= CONFIGURAÇÃO MYSQL =================
-# Substitua usuário, senha e database pelos seus
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:senha@localhost/senai_alunos'
+# ================= BANCO DE DADOS =================
+# Render usa DATABASE_URL | Local cai em SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'sqlite:///local.db'
+)
+
+# Ajuste necessário para PostgreSQL no Render
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace(
+        "postgres://", "postgresql://", 1
+    )
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -96,6 +109,7 @@ def cadastro():
             foto=filename,
             senha=generate_password_hash(senha)
         )
+
         db.session.add(aluno)
         db.session.commit()
 
@@ -143,9 +157,3 @@ def carteirinha():
 
     aluno = Aluno.query.filter_by(usuario=session['usuario']).first()
     return render_template('carteirinha.html', aluno=aluno)
-
-# ================= EXECUÇÃO =================
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # cria as tabelas se não existirem
-    app.run(debug=True)
